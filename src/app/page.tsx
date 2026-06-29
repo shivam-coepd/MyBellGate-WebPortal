@@ -20,6 +20,7 @@ import {
   QrCode,
   Building2,
 } from "lucide-react";
+const heroBackground = "/assets/heroBackground.png";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
@@ -109,132 +110,99 @@ const Home: React.FC = () => {
 
   return (
     <div className="bg-surface font-body-md text-on-background scroll-smooth">
-      {/* Hero Section */}
-      <section className="hero-gradient pt-24 pb-40 overflow-hidden relative">
-        <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-16 items-center">
-          <div className="z-10">
-            {/* <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full mb-8">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-secondary-container">🏆 India's #1 Gate Management App</span>
-            </div> */}
-            <h1 className="font-h1 text-h1 text-white mb-6">
-              Smart Security Starts at Your Gate.
-            </h1>
-            <p className="font-body-lg text-body-lg text-primary-fixed-dim max-w-xl mb-10">
-              Empower your community with the world's most trusted gate
-              management system. Seamless visitor tracking, automated
-              deliveries, and real-time security alerts.
-            </p>
-            <div className="flex flex-wrap gap-4 mb-12">
-              <button className="px-8 py-4 bg-secondary text-white font-medium rounded-[10px] flex items-center gap-2 hover:brightness-110 transition-all">
-                Book a Demo <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="px-8 py-4 border-1.5 border-white/20 bg-white/5 text-white font-medium rounded-[10px] hover:bg-white/10 transition-all">
-                Download App
-              </button>
-            </div>
-            <div className="hero-trust">
-              <div className="hero-trust-avatars">
-                <div
-                  className="hero-trust-avatar"
-                  style={{
-                    background: "linear-gradient(135deg,#6366f1,#818cf8)",
-                  }}
-                >
-                  RS
+      {/* Hero section new */}
+      <div className="relative">
+        <section className="relative overflow-hidden py-16 lg:py-24">
+          <img
+            className="absolute left-0 top-0 z-0 h-full w-full object-cover object-top"
+            src={heroBackground}
+            alt="Background image"
+          />
+          <div className="max-w-7xl mx-auto px-4 xl:px-0 relative z-10">
+            <div className="grid gap-y-8 md:px-4 lg:grid-cols-2 lg:items-center lg:gap-x-12 lg:gap-y-0 lg:px-8 xl:gap-x-16 xl:px-10">
+              <div className="flex flex-col items-start sm:items-center sm:text-center lg:items-start lg:text-left">
+                <div className="items-center justify-center rounded-full text-sm font-medium whitespace-nowrap shadow-[0_2px_10px_0px_rgba(0,0,0,0.15)] inline-flex bg-white text-neutral-700 px-2.5 py-1">
+                  Introducing MyGateBell
                 </div>
-                <div
-                  className="hero-trust-avatar"
-                  style={{
-                    background: "linear-gradient(135deg,#22c55e,#16a34a)",
-                  }}
-                >
-                  PM
+                <div className="bg-gradient-to-b from-slate-800 to-slate-600 bg-clip-text text-3xl font-semibold text-transparent lg:text-5xl mt-4 sm:mx-auto sm:w-2/3 sm:text-center md:w-1/2 lg:mx-0 lg:mt-6 lg:w-5/6 lg:text-left lg:leading-tight">
+                  Smart Security Starts at Your Gate.
                 </div>
-                <div
-                  className="hero-trust-avatar"
-                  style={{
-                    background: "linear-gradient(135deg,#f97316,#ea580c)",
-                  }}
-                >
-                  AK
-                </div>
-                <div
-                  className="hero-trust-avatar"
-                  style={{
-                    background: "linear-gradient(135deg,#ec4899,#be185d)",
-                  }}
-                >
-                  SR
-                </div>
-                <div
-                  className="hero-trust-avatar"
-                  style={{
-                    background: "linear-gradient(135deg,#14b8a6,#0d9488)",
-                  }}
-                >
-                  VN
-                </div>
-              </div>
-              <div className="hero-trust-text">
-                <strong>1,000+ residents</strong> managed daily
-              </div>
-            </div>
-          </div>
-          <div className="relative flex justify-center lg:justify-end">
-            <div className="relative animate-float">
-              <img
-                alt="Phone Mockup"
-                className="w-[320px] rounded-[40px] border-[8px] border-primary shadow-2xl"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEaXF-7wrZJFKPu3gzBHIes9OKl-G-EnaJgu1Ds1v8nxgEzGkIhfcBiE3iCrDEO0P-fvT6NHcyebEBmyZ9Q8SwkweApMOC7j0Mhh12EVCC6peYoba3ceH7v-k7nfelE1iPWuBAumvD3V5eDCI6f5FQO7wWkoh7khZmFsetistgmIATL1oT2_MsHY58c1ObvX639yCoA94T-BLkTW6KlRZatpU5kdQQAE4kF4ZZ92-_NUNshcBZKKGvf_fzFQuX-BhqAa3DIPDYc_c"
-              />
-              {/* Floating Cards */}
-              <div className="absolute -left-12 top-20 glass-card p-4 rounded-xl shadow-2xl max-w-[200px]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <CheckCircle2 className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white">
-                      Entry Approved
-                    </p>
-                    <p className="text-[10px] text-white/60">
-                      Ramesh Kumar (Guest)
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -right-12 bottom-32 glass-card p-4 rounded-xl shadow-2xl max-w-[200px]">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center">
-                    <Package className="w-6 h-6 text-secondary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white">
-                      Delivery Arrived
-                    </p>
-                    <p className="text-[10px] text-white/60">
-                      Parcel at Main Gate
-                    </p>
-                  </div>
+                <p className="mt-4 font-medium text-gray-700 text- sm:mx-auto sm:w-2/3 sm:text-center md:w-1/2 lg:mx-0 lg:mt-6 lg:w-11/12 lg:text-left">
+                  Empower your community with the world's most trusted gate
+                  management system. Seamless visitor tracking, automated
+                  deliveries, and real-time security alerts.
+                </p>
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:mt-12 mb-36">
+                  <a
+                    href="#demoSection"
+                    title="Learn more"
+                    className="items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus:shadow-[0_0px_0px_2px_rgba(15,23,42,0.25),0_2px_10px_0px_rgba(0,0,0,0.05)] shadow-[0_2px_10px_0px_rgba(0,0,0,0.05)] border border-neutral-100 bg-white text-neutral-700 hover:border-neutral-200 hover:bg-neutral-100 disabled:border-slate-900/5 disabled:bg-slate-50/30 disabled:text-slate-900/20 px-4 py-2.5 rounded-[0.625rem] flex"
+                  >
+                    <svg
+                      className="shrink-0 mr-2 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      data-slot="icon"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Book a Demo
+                    <svg
+                      className="shrink-0 ml-2 h-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                      data-slot="icon"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </a>
+                  <a
+                    href="#"
+                    title="Download App"
+                    className="items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus:shadow-[0_0px_0px_2px_rgba(15,23,42,0.25),0_2px_10px_0px_rgba(0,0,0,0.05)] shadow-[0_2px_10px_0px_rgba(0,0,0,0.05)] bg-slate-900 text-white hover:bg-slate-800 disabled:bg-slate-900/30 disabled:text-slate-50/70 px-4 py-2.5 rounded-[0.625rem] flex"
+                  >
+                    Download App
+                    <svg
+                      className="shrink-0 ml-2 h-5 w-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M3.61 2.99c-.37.2-.61.59-.61 1.04v15.94c0 .45.24.84.61 1.04l9.25-9.01L3.61 2.99zm10.13 8.01 2.71-2.64-9.83-5.44 7.12 8.08zm3.74-2.06-2.98 2.91 2.98 2.91 3.95-2.19c.76-.42.76-1.52 0-1.94l-3.95-2.19zm-10.86 12.14 9.83-5.44-2.71-2.64-7.12 8.08z" />
+                    </svg>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="absolute bottom-0 left-0 w-full leading-[0] translate-y-[1px]">
-          <svg
-            className="text-surface fill-current"
-            fill="none"
-            viewBox="0 0 1440 120"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M0 120L60 110C120 100 240 80 360 73.3C480 66.7 600 73.3 720 83.3C840 93.3 960 106.7 1080 103.3C1200 100 1320 80 1380 70L1440 60V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"></path>
-          </svg>
-        </div>
-      </section>
+          <div className="absolute bottom-0 left-0 w-full leading-[0] translate-y-[1px]">
+            <svg
+              className="text-surface fill-current"
+              fill="none"
+              viewBox="0 0 1440 120"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 120L60 110C120 100 240 80 360 73.3C480 66.7 600 73.3 720 83.3C840 93.3 960 106.7 1080 103.3C1200 100 1320 80 1380 70L1440 60V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z"></path>
+            </svg>
+          </div>
+        </section>
+      </div>
 
       {/* Stats Section */}
-      <section className="bg-surface py-section_padding">
+      <section className="bg-surface py-16">
         <div className="max-w-7xl mx-auto px-8 grid grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="text-center group">
             <h3 className="font-h2 text-primary mb-2 transition-transform group-hover:scale-110 duration-500">
@@ -642,251 +610,561 @@ const Home: React.FC = () => {
       </section>
 
       {/* Demo Section */}
-      <section className="hero-gradient py-section_padding">
-        <div className="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-20 items-center">
-          <div>
-            <h2 className="font-h2 text-h2 text-white mb-8">
-              See MyGateBell in Action
+      <section
+        id="demoSection"
+        className="relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/40"
+      >
+        {/* Soft decorative blobs */}
+        <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-secondary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
+
+        {/* Subtle dot pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `radial-gradient(circle, #0f172a 1px, transparent 1px)`,
+            backgroundSize: "24px 24px",
+          }}
+        />
+
+        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 py-20 lg:py-28">
+          {/* Section header */}
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 bg-secondary/8 border border-secondary/10 rounded-full px-5 py-2 mb-6">
+              <span className="w-2 h-2 bg-secondary rounded-full animate-pulse" />
+              <span className="text-secondary text-xs font-semibold tracking-widest uppercase">
+                Request a Demo
+              </span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight mb-5">
+              See{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-secondary to-blue-600">
+                MyGateBell
+              </span>{" "}
+              in Action
             </h2>
-            <p className="font-body-lg text-primary-fixed-dim mb-10">
+            <p className="text-slate-500 text-lg leading-relaxed">
               Request a personalized demo to see how MyGateBell can solve your
-              community's unique challenges. Our experts will walk you through
-              our ecosystem.
+              community's unique challenges.
             </p>
-            <div className="grid grid-cols-2 gap-6">
-              <div className="flex items-center gap-3">
-                <Verified className="w-6 h-6 text-secondary" />
-                <span className="text-white text-sm">ISO Certified</span>
+          </div>
+
+          <div className="grid lg:grid-cols-5 gap-10 items-start">
+            {/* Left Column — Trust & Info */}
+            <div className="lg:col-span-2 space-y-8 lg:sticky lg:top-28">
+              {/* Feature cards */}
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+                        />
+                      </svg>
+                    ),
+                    title: "Data Localized in India",
+                    desc: "100% compliant with Indian data privacy laws",
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+                        />
+                      </svg>
+                    ),
+                    title: "Instant Visitor Alerts",
+                    desc: "Get notified on your phone in under 2 seconds",
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    ),
+                    title: "24/7 Support",
+                    desc: "Round-the-clock assistance guaranteed",
+                  },
+                  {
+                    icon: (
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+                        />
+                      </svg>
+                    ),
+                    title: "500+ Communities",
+                    desc: "Trusted by societies across India",
+                  },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="group flex items-start gap-4 p-4 rounded-xl bg-white border border-slate-200/80 hover:border-secondary/30 hover:shadow-lg hover:shadow-secondary/5 transition-all duration-300"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center group-hover:bg-secondary/15 transition-colors">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-slate-900 text-sm font-semibold mb-0.5">
+                        {item.title}
+                      </h4>
+                      <p className="text-slate-400 text-xs leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-3">
-                <Verified className="w-6 h-6 text-secondary" />
-                <span className="text-white text-sm">24/7 Support</span>
+
+              {/* Stats row */}
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { value: "99.9%", label: "Uptime" },
+                  { value: "<2s", label: "Response" },
+                  { value: "4.8★", label: "Rating" },
+                ].map((stat, i) => (
+                  <div
+                    key={i}
+                    className="text-center py-4 rounded-xl bg-white border border-slate-200/80 shadow-sm"
+                  >
+                    <div className="text-secondary font-extrabold text-lg leading-none mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-slate-400 text-[11px] font-medium uppercase tracking-wider">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Social proof quote */}
+              <div className="p-5 rounded-xl bg-gradient-to-br from-secondary/5 to-blue-500/5 border border-secondary/10">
+                <div className="flex gap-1 mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-4 h-4 text-amber-400"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-slate-600 text-sm leading-relaxed italic mb-3">
+                  "MyGateBell transformed our gate management. Visitor tracking
+                  is now seamless and security has improved dramatically."
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-secondary to-blue-500 flex items-center justify-center text-white text-xs font-bold">
+                    RK
+                  </div>
+                  <div>
+                    <div className="text-slate-800 text-xs font-semibold">
+                      Rajesh Kumar
+                    </div>
+                    <div className="text-slate-400 text-[11px]">
+                      Secretary, Prestige Shantiniketan
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="bg-white p-10 rounded-xl shadow-2xl">
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <CheckCircle2 className="w-16 h-16 text-secondary mb-4" />
-                <h3 className="font-h2 text-2xl text-primary mb-2">
-                  Request Submitted!
-                </h3>
-                <p className="text-on-surface-variant">
-                  We'll get back to you within 24 hours.
-                </p>
-              </div>
-            ) : (
-              <form className="space-y-5" onSubmit={handleSubmit}>
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
-                    {error}
+
+            {/* Right Column — Form */}
+            <div className="lg:col-span-3">
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xl shadow-slate-200/50">
+                {submitted ? (
+                  <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
+                    <div className="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mb-6">
+                      <CheckCircle2 className="w-10 h-10 text-green-500" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                      Request Submitted!
+                    </h3>
+                    <p className="text-slate-500 max-w-sm leading-relaxed">
+                      We'll get back to you within 24 hours. Check your email
+                      for confirmation.
+                    </p>
                   </div>
+                ) : (
+                  <form className="space-y-7" onSubmit={handleSubmit}>
+                    {error && (
+                      <div className="flex items-start gap-3 bg-red-50 border border-red-200/80 rounded-xl px-4 py-3.5 animate-fade-in">
+                        <svg
+                          className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+                          />
+                        </svg>
+                        <span className="text-red-700 text-sm">{error}</span>
+                      </div>
+                    )}
+
+                    {/* ── Society Details ── */}
+                    <div className="space-y-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                          <svg
+                            className="w-4 h-4 text-secondary"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21m-3.75 3H21"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-slate-900 text-sm font-bold">
+                            Society Details
+                          </h3>
+                          <p className="text-slate-400 text-xs">
+                            Information about your community
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Society / Community Name{" "}
+                            <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="e.g. Ferns City"
+                            type="text"
+                            name="societyName"
+                            value={form.societyName}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Address
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="Street / locality"
+                            type="text"
+                            name="address"
+                            value={form.address}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            City <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="e.g. Bengaluru"
+                            type="text"
+                            name="city"
+                            value={form.city}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            State
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="e.g. Karnataka"
+                            type="text"
+                            name="state"
+                            value={form.state}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Pincode
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="560001"
+                            type="text"
+                            name="pincode"
+                            value={form.pincode}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Towers
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="1"
+                            type="number"
+                            min="1"
+                            name="towers"
+                            value={form.towers}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Total Flats
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="100"
+                            type="number"
+                            min="0"
+                            name="totalFlats"
+                            value={form.totalFlats}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="border-t border-slate-100" />
+
+                    {/* ── Contact Details ── */}
+                    <div className="space-y-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center">
+                          <svg
+                            className="w-4 h-4 text-secondary"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+                            />
+                          </svg>
+                        </div>
+                        <div>
+                          <h3 className="text-slate-900 text-sm font-bold">
+                            Contact Details
+                          </h3>
+                          <p className="text-slate-400 text-xs">
+                            How we can reach you
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Contact Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="Your full name"
+                            type="text"
+                            name="contactName"
+                            value={form.contactName}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Email <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="you@example.com"
+                            type="email"
+                            name="contactEmail"
+                            value={form.contactEmail}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Phone <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="+91 98765 43210"
+                            type="tel"
+                            name="contactPhone"
+                            value={form.contactPhone}
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            GST Number
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="Optional"
+                            type="text"
+                            name="gst"
+                            value={form.gst}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            PAN Number
+                          </label>
+                          <input
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all"
+                            placeholder="Optional"
+                            type="text"
+                            name="pan"
+                            value={form.pan}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div className="sm:col-span-2">
+                          <label className="block text-xs font-semibold text-slate-500 mb-2 uppercase tracking-wider">
+                            Message
+                          </label>
+                          <textarea
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 px-4 py-3.5 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/40 focus:border-secondary/40 transition-all resize-none"
+                            placeholder="Any specific requirements or questions..."
+                            rows={3}
+                            name="message"
+                            value={form.message}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Submit Button */}
+                    <div className="pt-2">
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="group relative w-full py-4 px-6 rounded-xl font-bold text-sm text-white overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-secondary/25 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-secondary to-blue-600 group-hover:from-secondary group-hover:to-secondary transition-all duration-500" />
+                        <span className="relative flex items-center justify-center gap-2">
+                          {submitting ? (
+                            <>
+                              <svg
+                                className="animate-spin w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                />
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                />
+                              </svg>
+                              Submitting...
+                            </>
+                          ) : (
+                            <>
+                              Submit Request
+                              <svg
+                                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth={2.5}
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                                />
+                              </svg>
+                            </>
+                          )}
+                        </span>
+                      </button>
+
+                      <p className="text-center text-slate-400 text-xs mt-4">
+                        By submitting, you agree to our Terms of Service &
+                        Privacy Policy
+                      </p>
+                    </div>
+                  </form>
                 )}
-
-                {/* Society Details */}
-                <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-                  Society Details
-                </p>
-                <div>
-                  <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                    Society / Community Name{" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                    placeholder="e.g. Ferns City"
-                    type="text"
-                    name="societyName"
-                    value={form.societyName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                    Address
-                  </label>
-                  <input
-                    className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                    placeholder="Street / locality"
-                    type="text"
-                    name="address"
-                    value={form.address}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      City <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="e.g. Bengaluru"
-                      type="text"
-                      name="city"
-                      value={form.city}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      State
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="e.g. Karnataka"
-                      type="text"
-                      name="state"
-                      value={form.state}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      Pincode
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="560001"
-                      type="text"
-                      name="pincode"
-                      value={form.pincode}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      Towers
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="1"
-                      type="number"
-                      min="1"
-                      name="towers"
-                      value={form.towers}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      Total Flats
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="100"
-                      type="number"
-                      min="0"
-                      name="totalFlats"
-                      value={form.totalFlats}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-
-                {/* Contact Details */}
-                <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant pt-2">
-                  Contact Details
-                </p>
-                <div>
-                  <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                    Contact Name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                    placeholder="Your full name"
-                    type="text"
-                    name="contactName"
-                    value={form.contactName}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      Email <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="you@example.com"
-                      type="email"
-                      name="contactEmail"
-                      value={form.contactEmail}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      Phone <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="+91 98765 43210"
-                      type="tel"
-                      name="contactPhone"
-                      value={form.contactPhone}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      GST Number
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="Optional"
-                      type="text"
-                      name="gst"
-                      value={form.gst}
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div>
-                    <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                      PAN Number
-                    </label>
-                    <input
-                      className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400"
-                      placeholder="Optional"
-                      type="text"
-                      name="pan"
-                      value={form.pan}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="font-label-caps block mb-1.5 text-sm font-medium text-primary">
-                    Message
-                  </label>
-                  <textarea
-                    className="w-full bg-[#F1F3F9] border border-gray-200 rounded-[10px] focus:outline-none focus:ring-2 focus:ring-secondary p-3.5 text-gray-900 placeholder-gray-400 resize-none"
-                    placeholder="Any specific requirements or questions..."
-                    rows={3}
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full py-4 bg-secondary text-white font-bold rounded-[10px] shadow-lg hover:brightness-110 active:scale-95 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                >
-                  {submitting ? "Submitting..." : "Submit Request"}
-                </button>
-              </form>
-            )}
+              </div>
+            </div>
           </div>
         </div>
       </section>

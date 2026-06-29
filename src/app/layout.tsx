@@ -1,8 +1,8 @@
+import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "../contexts/AuthContext";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import LayoutWrapper from "../components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "MyGateBell - The New Standard of Entry",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -31,11 +31,7 @@ export default function RootLayout({
       </head>
       <body>
         <AuthProvider>
-          <Navbar />
-          <div className="flex flex-col min-h-screen">
-            <main className="flex-grow">{children}</main>
-          </div>
-          <Footer />
+          <LayoutWrapper>{children}</LayoutWrapper>
         </AuthProvider>
       </body>
     </html>

@@ -67,6 +67,5 @@ for (const [file, route] of Object.entries(routes)) {
     
     let content = processFile(sourcePath);
     fs.writeFileSync(destPath, content);
-    console.log(`Moved ${file} to ${route}/page.tsx`);
   }
 }

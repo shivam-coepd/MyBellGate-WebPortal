@@ -115,6 +115,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         (window as any).State = (window as any).State || {};
         (window as any).State.token = null;
         (window as any).State.user = null;
+        window.location.href = "/login";
       }
     }
   };

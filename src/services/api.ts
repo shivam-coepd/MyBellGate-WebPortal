@@ -67,7 +67,8 @@ class ApiClient {
     } else if (
       !this.token &&
       !endpoint.includes("/auth/login") &&
-      !endpoint.includes("/auth/register")
+      !endpoint.includes("/auth/register") &&
+      !endpoint.includes("/users/profile")
     ) {
       console.warn("No token available for request to:", endpoint);
     }
@@ -83,19 +84,31 @@ class ApiClient {
       if (!response.ok) {
         if (response.status === 401) {
           if (!endpoint.includes("/auth/login")) {
-            console.error(`401 Unauthorized on endpoint: ${endpoint}`);
-            if (endpoint.includes("/auth/me")) {
-              console.error("Session expired - clearing token");
+            if (!endpoint.includes("/users/profile")) {
+              console.error(`401 Unauthorized on endpoint: ${endpoint}`);
+            }
+            if (
+              endpoint.includes("/auth/me") ||
+              endpoint.includes("/users/profile")
+            ) {
               this.clearToken();
-              if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+              if (
+                typeof window !== "undefined" &&
+                window.location.pathname !== "/login"
+              ) {
                 const currentPath = window.location.pathname;
-                if (currentPath.startsWith("/admin") || currentPath.startsWith("/super-admin")) {
+                if (
+                  currentPath.startsWith("/admin") ||
+                  currentPath.startsWith("/super-admin")
+                ) {
                   window.location.href = "/login";
                 }
               }
               throw new Error("Session expired");
             }
-            throw new Error(data.message || data.error || "Unauthorized access");
+            throw new Error(
+              data.message || data.error || "Unauthorized access",
+            );
           }
         }
         throw new Error(data.message || data.error || "Request failed");
@@ -125,8 +138,13 @@ class ApiClient {
       }
 
       return data;
-    } catch (error) {
-      console.error("API Error:", error);
+    } catch (error: any) {
+      if (
+        error.message !== "Session expired" &&
+        error.message !== "Unauthorized access"
+      ) {
+        // console.error("API Error:", error);
+      }
       throw error;
     }
   }

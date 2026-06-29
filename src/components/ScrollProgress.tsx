@@ -8,7 +8,8 @@ const ScrollProgress: React.FC = () => {
     const updateScrollProgress = () => {
       // Calculate how far the user has scrolled
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
       setScrollProgress(scrollPercent);
     };
@@ -21,7 +22,7 @@ const ScrollProgress: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-1 bg-gray-200/30">
+    <div className="w-full h-[6px] bg-gray-200/30">
       <div
         className="h-full bg-secondary transition-all duration-150 ease-out"
         style={{ width: `${scrollProgress}%` }}
