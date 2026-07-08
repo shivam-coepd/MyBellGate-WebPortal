@@ -165,7 +165,7 @@ const SocietyAdminDashboard: React.FC = () => {
         .filter((i: any) => i.status === "paid")
         .reduce((sum: number, i: any) => sum + (i.total_amount || 0), 0);
       const pendingRevenue = invoices
-        .filter((i: any) => i.status === "sent" || i.status === "draft")
+        .filter((i: any) => i.status === "sent" || i.status === "draft" || i.status === "pending")
         .reduce((sum: number, i: any) => sum + (i.total_amount || 0), 0);
       const overdueRevenue = invoices
         .filter((i: any) => i.status === "overdue")
@@ -246,7 +246,7 @@ const SocietyAdminDashboard: React.FC = () => {
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
           <div className="h-4 bg-gray-200 rounded w-1/3"></div>
         </div>
-        
+
         {/* Stats Grid Skeleton */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
@@ -376,11 +376,10 @@ const SocietyAdminDashboard: React.FC = () => {
         <div className="flex space-x-4 border-b overflow-x-auto">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`px-4 py-2 font-medium whitespace-nowrap ${
-              activeTab === "overview"
+            className={`px-4 py-2 font-medium whitespace-nowrap ${activeTab === "overview"
                 ? "border-b-2 border-blue-500 text-blue-600"
                 : "text-gray-500 hover:text-gray-700"
-            }`}
+              }`}
           >
             Overview
           </button>

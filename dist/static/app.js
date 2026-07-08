@@ -26,7 +26,8 @@ window.State = State;
 
 // ============ API CLIENT ============
 const API = {
-  base: "https://app.mygatebell.com/backend",
+  // base: "https://app.mygatebell.com/backend",
+  base: "https://magenta-grouse-563358.hostingersite.com/backend",
   async request(method, endpoint, body = null) {
     if (
       typeof SocietyBridge !== "undefined" &&
@@ -5899,7 +5900,8 @@ function guardTodayBadge(g) {
 
 async function guardApiRequest(path) {
   // Try the main route first; if 404, fall back to the standalone patch file
-  const base = 'https://app.mygatebell.com/backend';
+  // const base = 'https://app.mygatebell.com/backend';
+  const base = 'https://magenta-grouse-563358.hostingersite.com/backend';
   const token = window.State?.token || localStorage.getItem('gh_token') || localStorage.getItem('auth_token') || '';
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;

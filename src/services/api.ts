@@ -1,6 +1,7 @@
 // API Client for MyGate Backend Integration
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
+  // process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
+  process.env.NEXT_PUBLIC_API_URL || "https://magenta-grouse-563358.hostingersite.com/backend";
 
 interface ApiResponse<T = any> {
   success: boolean;

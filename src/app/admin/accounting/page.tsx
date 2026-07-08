@@ -106,7 +106,7 @@ const AccountingManagement: React.FC = () => {
           <div className="h-8 bg-gray-200 rounded w-1/4"></div>
           <div className="h-10 bg-gray-200 rounded w-32"></div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
@@ -229,10 +229,10 @@ const AccountingManagement: React.FC = () => {
     0,
   );
   const paidRevenue = invoices
-    .filter((inv) => inv.status === "paid" || inv.status === "partially_paid")
+    .filter((inv) => inv.status === "paid")
     .reduce((sum, inv) => sum + Number(inv.total_amount), 0);
   const pendingRevenue = invoices
-    .filter((inv) => inv.status === "draft" || inv.status === "sent")
+    .filter((inv) => inv.status === "draft" || inv.status === "sent" || inv.status === "pending")
     .reduce((sum, inv) => sum + Number(inv.total_amount), 0);
 
   const StatCard: React.FC<{
@@ -296,31 +296,28 @@ const AccountingManagement: React.FC = () => {
         <div className="flex space-x-4 border-b">
           <button
             onClick={() => setActiveTab("overview")}
-            className={`px-4 py-2 font-medium ${
-              activeTab === "overview"
-                ? "border-b-2 border-blue-500 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === "overview"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
           >
             Overview
           </button>
           <button
             onClick={() => setActiveTab("charge-heads")}
-            className={`px-4 py-2 font-medium ${
-              activeTab === "charge-heads"
-                ? "border-b-2 border-blue-500 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === "charge-heads"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
           >
             Charge Heads ({chargeHeads.length})
           </button>
           <button
             onClick={() => setActiveTab("invoices")}
-            className={`px-4 py-2 font-medium ${
-              activeTab === "invoices"
-                ? "border-b-2 border-blue-500 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === "invoices"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
+              }`}
           >
             Invoices ({invoices.length})
           </button>
@@ -399,17 +396,16 @@ const AccountingManagement: React.FC = () => {
                           </td>
                           <td className="px-6 py-4">
                             <span
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                invoice.status === "paid"
-                                  ? "bg-green-100 text-green-800"
-                                  : invoice.status === "draft"
-                                    ? "bg-gray-100 text-gray-800"
-                                    : invoice.status === "sent"
-                                      ? "bg-blue-100 text-blue-800"
-                                      : invoice.status === "overdue"
-                                        ? "bg-red-100 text-red-800"
-                                        : "bg-yellow-100 text-yellow-800"
-                              }`}
+                              className={`px-2 py-1 text-xs rounded-full ${invoice.status === "paid"
+                                ? "bg-green-100 text-green-800"
+                                : invoice.status === "draft" || invoice.status === "pending"
+                                  ? "bg-gray-100 text-gray-800"
+                                  : invoice.status === "sent"
+                                    ? "bg-blue-100 text-blue-800"
+                                    : invoice.status === "overdue"
+                                      ? "bg-red-100 text-red-800"
+                                      : "bg-yellow-100 text-yellow-800"
+                                }`}
                             >
                               {invoice.status.toUpperCase()}
                             </span>
@@ -471,11 +467,10 @@ const AccountingManagement: React.FC = () => {
                       <td className="px-6 py-4">{charge.gst_rate}%</td>
                       <td className="px-6 py-4">
                         <span
-                          className={`px-2 py-1 text-xs rounded-full ${
-                            charge.is_active
-                              ? "bg-green-100 text-green-800"
-                              : "bg-gray-100 text-gray-800"
-                          }`}
+                          className={`px-2 py-1 text-xs rounded-full ${charge.is_active
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-800"
+                            }`}
                         >
                           {charge.is_active ? "Active" : "Inactive"}
                         </span>
@@ -529,17 +524,16 @@ const AccountingManagement: React.FC = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`px-2 py-1 text-xs rounded-full ${
-                            invoice.status === "paid"
-                              ? "bg-green-100 text-green-800"
-                              : invoice.status === "draft"
-                                ? "bg-gray-100 text-gray-800"
-                                : invoice.status === "sent"
-                                  ? "bg-blue-100 text-blue-800"
-                                  : invoice.status === "overdue"
-                                    ? "bg-red-100 text-red-800"
-                                    : "bg-yellow-100 text-yellow-800"
-                          }`}
+                          className={`px-2 py-1 text-xs rounded-full ${invoice.status === "paid"
+                            ? "bg-green-100 text-green-800"
+                            : invoice.status === "draft" || invoice.status === "pending"
+                              ? "bg-gray-100 text-gray-800"
+                              : invoice.status === "sent"
+                                ? "bg-blue-100 text-blue-800"
+                                : invoice.status === "overdue"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-yellow-100 text-yellow-800"
+                            }`}
                         >
                           {invoice.status.toUpperCase()}
                         </span>

@@ -13,7 +13,7 @@ const Product: React.FC = () => {
               <span className="w-1 h-1 rounded-full bg-blue-400"></span>
               <span className="text-label-caps opacity-80">V3.0 IS NOW LIVE</span>
             </div>
-            <h1 className="font-h1 text-h1 mb-6">Security Simplified.<br/><span className="text-secondary-container">Living Elevated.</span></h1>
+            <h1 className="font-h1 text-h1 mb-6">Security Simplified.<br /><span className="text-secondary-container">Living Elevated.</span></h1>
             <p className="font-body-lg text-body-lg text-slate-300 max-w-xl mb-10">
               The premium ecosystem connecting residents, guards, and management in one seamless interface. Experience the new standard of entry for high-end gated communities.
             </p>
@@ -125,15 +125,6 @@ const Product: React.FC = () => {
               <h2 className="font-h2 text-h2 mb-8">Uncompromising Security Architecture</h2>
               <p className="text-body-lg text-slate-400 mb-12">Built on military-grade encryption protocols and hosted on decentralized servers, MyGateBell ensures that community data remains private, persistent, and protected.</p>
               <div className="space-y-8">
-                <div className="flex gap-6">
-                  <div className="w-12 h-12 flex-shrink-0 bg-white/5 border border-white/10 flex items-center justify-center rounded-xl">
-                    <Fingerprint className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-xl mb-1">Biometric Authentication</h4>
-                    <p className="text-slate-400">Zero-trust access for all management levels with local biometric verification.</p>
-                  </div>
-                </div>
                 <div className="flex gap-6">
                   <div className="w-12 h-12 flex-shrink-0 bg-white/5 border border-white/10 flex items-center justify-center rounded-xl">
                     <Lock className="w-6 h-6 text-blue-400" />

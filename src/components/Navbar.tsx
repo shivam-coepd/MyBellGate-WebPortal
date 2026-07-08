@@ -14,9 +14,9 @@ const Navbar: React.FC = () => {
     { name: "Home", path: "/" },
     { name: "Product", path: "/product" },
     { name: "Features", path: "/features" },
-    { name: "Security", path: "/security" },
     { name: "Pricing", path: "/pricing" },
     { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact" },
   ];
 
   const isActive = (path: string) => pathname === path;
@@ -87,18 +87,6 @@ const Navbar: React.FC = () => {
                   </li>
                   <li
                     className={
-                      isActive("/security") ? "border-b-2 border-primary" : ""
-                    }
-                  >
-                    <a
-                      className="px-3 py-2 text-sm font-medium text-neutral-700 transition hover:text-neutral-600"
-                      href="/security"
-                    >
-                      Security
-                    </a>
-                  </li>
-                  <li
-                    className={
                       isActive("/pricing") ? "border-b-2 border-primary" : ""
                     }
                   >
@@ -119,6 +107,18 @@ const Navbar: React.FC = () => {
                       href="/about"
                     >
                       About
+                    </a>
+                  </li>
+                  <li
+                    className={
+                      isActive("/contact") ? "border-b-2 border-primary" : ""
+                    }
+                  >
+                    <a
+                      className="px-3 py-2 text-sm font-medium text-neutral-700 transition hover:text-neutral-600"
+                      href="/contact"
+                    >
+                      Contact
                     </a>
                   </li>
                 </ul>
@@ -177,11 +177,10 @@ const Navbar: React.FC = () => {
               key={link.name}
               href={link.path}
               onClick={() => setMobileOpen(false)}
-              className={`py-2 text-sm font-medium ${
-                isActive(link.path)
-                  ? "text-secondary font-semibold"
-                  : "text-on-surface-variant hover:text-secondary"
-              }`}
+              className={`py-2 text-sm font-medium ${isActive(link.path)
+                ? "text-secondary font-semibold"
+                : "text-on-surface-variant hover:text-secondary"
+                }`}
             >
               {link.name}
             </Link>

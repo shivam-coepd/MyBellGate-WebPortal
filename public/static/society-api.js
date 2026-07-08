@@ -89,7 +89,8 @@ const SocietyBridge = (() => {
     }
     const opts = { method, headers };
     if (body) opts.body = JSON.stringify(body);
-    const res = await fetch(`https://app.mygatebell.com/backend${endpoint}`, opts);
+    // const res = await fetch(`https://app.mygatebell.com/backend${endpoint}`, opts);
+    const res = await fetch(`https://magenta-grouse-563358.hostingersite.com/backend${endpoint}`, opts);
     let json;
     try {
       json = await res.json();
@@ -179,7 +180,7 @@ const SocietyBridge = (() => {
   }
 
   function mapInvoiceStatus(status) {
-    if (status === "paid" || status === "partially_paid") return "paid";
+    if (status === "paid" || status === "pending") return "paid";
     if (status === "overdue") return "overdue";
     if (status === "cancelled") return "cancelled";
     return "unpaid";
@@ -650,7 +651,7 @@ const SocietyBridge = (() => {
     );
     const paid = invoices.filter((i) => i.status === "paid");
     const unpaid = invoices.filter(
-      (i) => i.status === "sent" || i.status === "draft" || i.status === "partially_paid"
+      (i) => i.status === "sent" || i.status === "draft" || i.status === "pending"
     );
     const overdue = invoices.filter((i) => i.status === "overdue");
 

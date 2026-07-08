@@ -23,7 +23,8 @@ import {
 const heroBackground = "/assets/heroBackground.png";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
+  // process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
+  process.env.NEXT_PUBLIC_API_URL || "https://magenta-grouse-563358.hostingersite.com/backend";
 
 async function submitSocietyRegistration(
   data: Record<string, string | number | null>,

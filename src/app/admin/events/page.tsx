@@ -164,7 +164,8 @@ const EventManagement: React.FC = () => {
       const token =
         localStorage.getItem("auth_token") || (window as any).State?.token;
       const response = await fetch(
-        "https://app.mygatebell.com/backend/upload/file",
+        // "https://app.mygatebell.com/backend/upload/file",
+        "https://magenta-grouse-563358.hostingersite.com/backend/upload/file",
         {
           method: "POST",
           headers: {

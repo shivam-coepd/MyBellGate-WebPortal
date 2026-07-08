@@ -2,7 +2,7 @@
   "name": "webapp",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=\"--max-old-space-size=4096\" next dev",
+    "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

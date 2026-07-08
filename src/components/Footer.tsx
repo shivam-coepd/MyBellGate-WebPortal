@@ -42,14 +42,6 @@ const Footer: React.FC = () => {
           </h5>
           <ul className="space-y-4">
             <li>
-              <Link
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="/security"
-              >
-                Gate Security
-              </Link>
-            </li>
-            <li>
               <a
                 className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
                 href="#"
@@ -100,14 +92,6 @@ const Footer: React.FC = () => {
             <li>
               <Link
                 className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="/security"
-              >
-                Security
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
                 href="/privacy-policy"
               >
                 Privacy Policy
@@ -132,7 +116,7 @@ const Footer: React.FC = () => {
             <li>
               <a
                 className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="#"
+                href="/contact"
               >
                 Contact Us
               </a>
@@ -150,7 +134,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-8 py-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-400">
-        <p>© 2024 MyGateBell. The New Standard of Entry.</p>
+        <p>© 2026 MyGateBell. The New Standard of Entry.</p>
         <div className="flex gap-6">
           <a className="hover:text-primary" href="#">
             Terms

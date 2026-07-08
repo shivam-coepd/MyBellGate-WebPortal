@@ -66,9 +66,8 @@ const Pricing: React.FC = () => {
             aria-label="Toggle billing cycle"
           >
             <div
-              className={`w-6 h-6 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
-                isAnnual ? "translate-x-6" : "translate-x-0"
-              }`}
+              className={`w-6 h-6 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out ${isAnnual ? "translate-x-6" : "translate-x-0"
+                }`}
             />
           </button>
           <span
@@ -183,10 +182,6 @@ const Pricing: React.FC = () => {
             <li className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-secondary-fixed" />
               <span className="font-body-md">Unlimited Units</span>
-            </li>
-            <li className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 text-secondary-fixed" />
-              <span className="font-body-md">Biometric Integration</span>
             </li>
             <li className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 text-secondary-fixed" />
