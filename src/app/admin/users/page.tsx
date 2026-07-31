@@ -42,6 +42,30 @@ const UserManagement: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [newUser, setNewUser] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
+    role: "resident",
+  });
+
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await apiClient.createUser(newUser);
+      if (response.success) {
+        alert("User added successfully");
+        setShowAddModal(false);
+        setNewUser({ name: "", phone: "", email: "", password: "", role: "resident" });
+        loadUsers();
+      } else {
+        alert("Error adding user: " + response.message);
+      }
+    } catch (error: any) {
+      alert("Error adding user: " + error.message);
+    }
+  };
 
   useEffect(() => {
     loadUsers();
@@ -425,7 +449,7 @@ const UserManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
             <h2 className="text-xl font-semibold mb-4">Add New User</h2>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleAddUser}>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Name
@@ -433,6 +457,8 @@ const UserManagement: React.FC = () => {
                 <input
                   type="text"
                   className="w-full px-4 py-2 border rounded-lg"
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                   required
                 />
               </div>
@@ -443,6 +469,8 @@ const UserManagement: React.FC = () => {
                 <input
                   type="tel"
                   className="w-full px-4 py-2 border rounded-lg"
+                  value={newUser.phone}
+                  onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
                   required
                 />
               </div>
@@ -453,6 +481,8 @@ const UserManagement: React.FC = () => {
                 <input
                   type="email"
                   className="w-full px-4 py-2 border rounded-lg"
+                  value={newUser.email}
+                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                   required
                 />
               </div>
@@ -463,6 +493,8 @@ const UserManagement: React.FC = () => {
                 <input
                   type="password"
                   className="w-full px-4 py-2 border rounded-lg"
+                  value={newUser.password}
+                  onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                   required
                 />
               </div>
@@ -470,7 +502,12 @@ const UserManagement: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Role
                 </label>
-                <select className="w-full px-4 py-2 border rounded-lg" required>
+                <select
+                  className="w-full px-4 py-2 border rounded-lg"
+                  value={newUser.role}
+                  onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                  required
+                >
                   <option value="resident">Resident</option>
                   <option value="guard">Guard</option>
                   <option value="staff">Staff</option>
