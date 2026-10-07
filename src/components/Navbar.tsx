@@ -138,8 +138,8 @@ const Navbar: React.FC = () => {
                     title="Try free"
                     className="items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus:shadow-[0_0px_0px_2px_rgba(15,23,42,0.25),0_2px_10px_0px_rgba(0,0,0,0.05)] shadow-[0_2px_10px_0px_rgba(0,0,0,0.05)] bg-slate-900 text-white hover:bg-slate-800 disabled:bg-slate-900/30 disabled:text-slate-50/70 px-3 py-2 rounded-[0.625rem] flex"
                   >
-                    Try free
-                    <span className="ml-1 text-slate-400"> - 7 days</span>
+                    Try free now
+                    {/* <span className="ml-1 text-slate-400"> - 7 days</span> */}
                   </a>
                   <button
                     type="button"

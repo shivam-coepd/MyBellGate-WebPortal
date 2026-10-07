@@ -139,8 +139,9 @@ const Home: React.FC = () => {
                     title="Learn more"
                     className="items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus:shadow-[0_0px_0px_2px_rgba(15,23,42,0.25),0_2px_10px_0px_rgba(0,0,0,0.05)] shadow-[0_2px_10px_0px_rgba(0,0,0,0.05)] border border-neutral-100 bg-white text-neutral-700 hover:border-neutral-200 hover:bg-neutral-100 disabled:border-slate-900/5 disabled:bg-slate-50/30 disabled:text-slate-900/20 px-4 py-2.5 rounded-[0.625rem] flex"
                   >
+                    Book a Demo
                     <svg
-                      className="shrink-0 mr-2 h-4"
+                      className="shrink-0 ml-2 h-4"
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
@@ -153,24 +154,10 @@ const Home: React.FC = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Book a Demo
-                    <svg
-                      className="shrink-0 ml-2 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden="true"
-                      data-slot="icon"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.97 3.97a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 1 1-1.06-1.06l6.22-6.22H3a.75.75 0 0 1 0-1.5h16.19l-6.22-6.22a.75.75 0 0 1 0-1.06Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
                   </a>
                   <a
-                    href="#"
+                    href="https://play.google.com/store/apps/details?id=com.mygatebell.app"
+                    target="_blank"
                     title="Download App"
                     className="items-center justify-center whitespace-nowrap text-sm font-medium transition-all focus:shadow-[0_0px_0px_2px_rgba(15,23,42,0.25),0_2px_10px_0px_rgba(0,0,0,0.05)] shadow-[0_2px_10px_0px_rgba(0,0,0,0.05)] bg-slate-900 text-white hover:bg-slate-800 disabled:bg-slate-900/30 disabled:text-slate-50/70 px-4 py-2.5 rounded-[0.625rem] flex"
                   >
@@ -307,8 +294,8 @@ const Home: React.FC = () => {
               <div className="relative mt-8 h-64 overflow-hidden rounded-lg">
                 <img
                   alt="Dashboard Mockup"
-                  className="w-full object-cover transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSLN90afIe8owJl7gUj377eBEXllzt9VbDemtcGouIcmS8SUdgCZSYxxsTSejFwm_FR7hD4Tb5cEPS08VBml8Bn9lRuQ1L4ZCyiHwpk-0he1YdZREK0_y3dOjuf-6ZJ-lzXlEiySc7FHUy5Hx2pjqP7rhvhpvVGQmemO6vJH0blclYJAHI6DTW_Dr0DzE5jNZyRu-VWEyIADPi7e4VDWz1NDqIzAbA430Bz-0Kj_DE4IUsacnIfguyFnuj5eIWxvd2SiIxpX0V3fw"
+                  className="w-full object-cover transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700 rounded-md"
+                  src="/assets/admin-panel-mockup.png"
                 />
               </div>
             </div>
@@ -338,8 +325,8 @@ const Home: React.FC = () => {
               <div className="relative mt-8 h-64 flex justify-center">
                 <img
                   alt="Mobile Mockup"
-                  className="h-full object-contain transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzBeAQxpOwNj4MVELgGAcIEMSTv1GRx21QLh8f40knMZ6HIGYRUnbQ2l10zv_YhxZImBSs5px52a5BolEwGakhOrbmnfNwjfufeLUnSOpn5UIihIWuy5PjfSq87yoNZoi3GEH8yNyjUoiA2B2W7GVBNTlacgleW6qMpf5_vQkV6XAmUdkL4jup9EL0dTCpiaT-f835V77lija6VdWf9R1CDGrCgt3e8pyAoUn1dUkE3q_tEGO8F7h8omvOjB263bhW8Qw2etLLrko"
+                  className="h-full object-contain transform translate-y-10 group-hover:translate-y-0 transition-transform duration-700 rounded-md"
+                  src="/assets/resident-dashbaord-mockup.png"
                 />
               </div>
             </div>
@@ -1180,25 +1167,18 @@ const Home: React.FC = () => {
               more secure lifestyle for you and your family.
             </p>
             <div className="flex flex-wrap gap-4 mb-12">
-              <a href="#">
-                <img
-                  alt="App Store"
-                  className="h-12"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8sUk-jIMHiaqovURWGQ-zCETOvvgIw771nGxTcPzkWcMrODZ7HH57TSsCG_b5WfOtf14SRDmvpipKbE9PbhxxVOBssGXGnBV7BAqfWTm8K8D0cRYBneciigs2EEHOoTC2OWgjC73GUnvprhM1QGVbLAVLoB4BziX3oDFVXRXHZVSukhcalerX5ICaLH1XPUhhXLrnTZ7wZxb5d71wF8sJR_rzArpLSgooP93sHSeBKsXD6VzUDAUb1dv1jXXB3vAYs2VpS40gWKM"
-                />
-              </a>
-              <a href="#">
+              <a href="https://play.google.com/store/apps/details?id=com.mygatebell.app" target="_blank">
                 <img
                   alt="Play Store"
-                  className="h-12"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuApFxMkJen5RhcwPDFQ1iJOwiGkQFF9jK77WjrDKsHb8G6epWX61je3-UYvD6aueU1ZgypYlnT-mMjRYyOsdy6AI7gOxVRqTQfahe0ml9GlZicqgi7L0iSp7dObMdat0ZA5p3HwoEgmGeRE4lCQQMh3maK9veG3xC7rDh_tQ-0RHs_YwL9Rb85Ju60odGJOwoUzCMK3y5ftNl1nD5QDxmj6N9xB3tVY7OlSpuqB6YoG8HVj7DSZK_-IgIlZZgobnUg3AaKSLCgiFRY"
+                  className="bg-white p-1 h-10 rounded-md"
+                  src="/assets/google-play.png"
                 />
               </a>
             </div>
             <div className="flex items-center gap-6">
-              <div className="p-4 bg-white rounded-xl">
+              <div className="p-3 bg-white rounded-xl">
                 <div className="w-24 h-24 bg-gray-100 flex items-center justify-center">
-                  <QrCode className="w-12 h-12 text-primary" />
+                  <img src="/assets/playstore-qr.png" alt="QR Code" />
                 </div>
               </div>
               <p className="text-sm">
@@ -1212,8 +1192,8 @@ const Home: React.FC = () => {
             <div className="relative w-full max-w-sm">
               <img
                 alt="Phone App"
-                className="rounded-[40px] border-[8px] border-white shadow-2xl"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAVl3umnXyU8w621M_2cx2766CUP07yAcgQKVNudjWsHxwn_6v_RN79Cjb1YQO6Vp7VrAr54ihhVed_KZqNAiQLC57oMeKHFgSnsj1qgNN33-Oe31JbETASJUUMxvXTO5oWiFjxTKQ0NNzXdXFT-S7MI7UqFwleqvEOdN2LdcQwabKydDiKA122K0c8o3ea3hv8No2DtYet92hnJW5wcLyPwXdZpacVmpjKiPh9pRfqm-wq8AxLKzTlNR9D9qwShzLntR-tDmP5cI"
+                className="rounded-[40px] border-[6px] border-white shadow-2xl"
+                src="/assets/cta-section.png"
               />
             </div>
           </div>

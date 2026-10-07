@@ -42,7 +42,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-h2 text-xl text-primary mb-2">Head Office</h4>
-                    <p className="font-body-md text-on-surface-variant">123 Tech Park, Innovation Hub<br />Bengaluru, Karnataka 560001, India</p>
+                    <p className="font-body-md text-on-surface-variant">3rd Floor, Walchand House, Happly Colony, Karve Nagar<br />Pune, Maharashtra 411038, India</p>
                   </div>
                 </div>
 
@@ -52,7 +52,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-h2 text-xl text-primary mb-2">Phone</h4>
-                    <p className="font-body-md text-on-surface-variant">+91 1800 123 4567<br />Mon-Fri from 9am to 6pm</p>
+                    <p className="font-body-md text-on-surface-variant">+91 9154829627<br />Mon-Fri from 9 am to 6 pm</p>
                   </div>
                 </div>
 
@@ -62,7 +62,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-h2 text-xl text-primary mb-2">Email</h4>
-                    <p className="font-body-md text-on-surface-variant">hello@mygatebell.com<br />support@mygatebell.com</p>
+                    <p className="font-body-md text-on-surface-variant">support@mygatebell.com</p>
                   </div>
                 </div>
               </div>

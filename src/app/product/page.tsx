@@ -56,10 +56,12 @@ const Product: React.FC = () => {
                     <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-secondary" /> Digital Clubhouse Booking</li>
                     <li className="flex items-center gap-2 text-sm font-medium"><CheckCircle2 className="w-4 h-4 text-secondary" /> Panic Button Emergency Link</li>
                   </ul>
-                  <button className="text-secondary font-semibold flex items-center gap-2 hover:gap-3 transition-all">Download App <ArrowRight className="w-5 h-5" /></button>
+                  <a href="https://play.google.com/store/apps/details?id=com.mygatebell.app" target="_blank">
+                    <button className="text-secondary font-semibold flex items-center gap-2 hover:gap-3 transition-all">Download App <ArrowRight className="w-5 h-5" /></button>
+                  </a>
                 </div>
                 <div className="flex-1 bg-surface-container rounded-xl overflow-hidden min-h-[300px]">
-                  <img className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAiHPqv4qUvZXZlIWxV2fBxIhhs3LCPNgH0akk8w82pypPBfpVM-kkAPTlXi0SGL1bIkrYZ92MGihGlFlRP40DxYOxHk3Sg9wNI9NVttqOt4j1-yrBHEcmkZe4Oy9zUlVDpPHdD98gcP-5PT4F372ssM2UvJ843b9ovSQEWXIWpYFNGWtNJuO2KxjXIMlTCxesK8N3gIx9JEYpFHyCrGl9dvhp-4Egmie3T4Y5_4goPp6Zi-0yiZjNiPDHnmuPrIHZ6W1MR3MVP8c" alt="Resident App UI" />
+                  <img className="w-full h-full object-cover" src="/assets/resident-dashbaord-mockup.png" alt="Resident App UI" />
                 </div>
               </div>
             </div>

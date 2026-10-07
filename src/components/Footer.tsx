@@ -8,14 +8,14 @@ const Footer: React.FC = () => {
     <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-8 py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 font-['Plus_Jakarta_Sans'] text-sm leading-relaxed">
         <div className="col-span-2 lg:col-span-2">
-          <div className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
+          <Link href="/" className="text-lg font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
             <img
               src={logo}
               alt="MyGateBell Logo"
-              className="w-7 h-7 md:w-9 md:h-9 object-contain transition-transform duration-300 hover:scale-110"
+              className="w-7 h-7 md:w-9 md:h-9 object-contain"
             />
             MyGateBell
-          </div>
+          </Link>
           <p className="text-slate-500 dark:text-slate-400 max-w-xs mb-8">
             Redefining community living through technology, trust, and
             transparency. Join 1,000+ societies today.
@@ -38,63 +38,47 @@ const Footer: React.FC = () => {
 
         <div>
           <h5 className="font-bold text-primary dark:text-white mb-6">
-            Product
-          </h5>
-          <ul className="space-y-4">
-            <li>
-              <a
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="#"
-              >
-                ERP & Billing
-              </a>
-            </li>
-            <li>
-              <Link
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="/features"
-              >
-                Helpdesk
-              </Link>
-            </li>
-            <li>
-              <a
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="#"
-              >
-                Home Services
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h5 className="font-bold text-primary dark:text-white mb-6">
             Company
           </h5>
           <ul className="space-y-4">
             <li>
               <Link
                 className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="/about"
+                href="/"
               >
-                About Us
+                Home
               </Link>
-            </li>
-            <li>
-              <a
-                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="#"
-              >
-                Careers
-              </a>
             </li>
             <li>
               <Link
                 className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
-                href="/privacy-policy"
+                href="/product"
               >
-                Privacy Policy
+                Product
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
+                href="/features"
+              >
+                Features
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
+                href="/pricing"
+              >
+                Pricing
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-slate-500 hover:text-secondary hover:underline decoration-2 underline-offset-4"
+                href="/about"
+              >
+                About Us
               </Link>
             </li>
           </ul>
@@ -134,7 +118,7 @@ const Footer: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-8 py-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-400">
-        <p>© 2026 MyGateBell. The New Standard of Entry.</p>
+        <p>© 2026 MyGateBell. The New Standard of Society Management.</p>
         <div className="flex gap-6">
           <a className="hover:text-primary" href="#">
             Terms
@@ -142,9 +126,6 @@ const Footer: React.FC = () => {
           <Link className="hover:text-primary" href="/privacy-policy">
             Privacy
           </Link>
-          <a className="hover:text-primary" href="#">
-            Cookies
-          </a>
         </div>
       </div>
     </footer>
