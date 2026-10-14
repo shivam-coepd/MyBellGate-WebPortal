@@ -908,6 +908,74 @@ class ApiClient {
   async deleteEvent(id: string | number) {
     return this.request(`/events/${id}`, { method: "DELETE" });
   }
+
+  // Daily Helpers & Static QR Gate Pass
+  async getDailyHelpers(params?: {
+    flat_id?: string | number;
+    service_type?: string;
+    search?: string;
+  }) {
+    const queryString = new URLSearchParams(params as any).toString();
+    return this.request(`/daily-helpers${queryString ? `?${queryString}` : ""}`);
+  }
+
+  async getDailyHelperById(id: string | number) {
+    return this.request(`/daily-helpers/${id}`);
+  }
+
+  async createDailyHelper(data: {
+    flat_id?: string | number;
+    name: string;
+    phone: string;
+    service_type: string;
+    image_url?: string | null;
+    vehicle_number?: string | null;
+    expected_time_in?: string | null;
+    expected_time_out?: string | null;
+    working_days?: string;
+  }) {
+    return this.request("/daily-helpers", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateDailyHelper(id: string | number, data: any) {
+    return this.request(`/daily-helpers/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteDailyHelper(id: string | number) {
+    return this.request(`/daily-helpers/${id}`, { method: "DELETE" });
+  }
+
+  async scanDailyHelperQr(qrCode: string, notes?: string) {
+    return this.request("/daily-helpers/scan", {
+      method: "POST",
+      body: JSON.stringify({ qr_code: qrCode, notes }),
+    });
+  }
+
+  async getActiveInsideDailyHelpers() {
+    return this.request("/daily-helpers/active-inside");
+  }
+
+  async manualExitDailyHelper(logId: string | number) {
+    return this.request(`/daily-helpers/manual-exit/${logId}`, {
+      method: "POST",
+    });
+  }
+
+  async getDailyHelperLogs(params?: {
+    flat_id?: string | number;
+    daily_helper_id?: string | number;
+    date?: string;
+  }) {
+    const queryString = new URLSearchParams(params as any).toString();
+    return this.request(`/daily-helpers/logs${queryString ? `?${queryString}` : ""}`);
+  }
 }
 
 export const apiClient = new ApiClient();

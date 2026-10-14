@@ -443,6 +443,12 @@ const SocietyAdminDashboard: React.FC = () => {
           >
             Security Alerts
           </button>
+          <button
+            onClick={() => navigate.push("/admin/visitors/daily-help")}
+            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700 flex items-center gap-1.5"
+          >
+            Daily Help & Static QR
+          </button>
         </div>
       </div>
 
