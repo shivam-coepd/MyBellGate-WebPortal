@@ -12,7 +12,7 @@ import {
   CheckCircle,
   ArrowLeft,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface ChargeHead {
   id: string;
@@ -45,6 +45,7 @@ interface Flat {
 
 const AccountingManagement: React.FC = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
   const [chargeHeads, setChargeHeads] = useState<ChargeHead[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
@@ -53,6 +54,13 @@ const AccountingManagement: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     "overview" | "charge-heads" | "invoices"
   >("overview");
+
+  useEffect(() => {
+    const tab = searchParams.get("tab");
+    if (tab === "invoices" || tab === "charge-heads" || tab === "overview") {
+      setActiveTab(tab as any);
+    }
+  }, [searchParams]);
   const [showAddChargeHeadModal, setShowAddChargeHeadModal] = useState(false);
   const [showCreateInvoiceModal, setShowCreateInvoiceModal] = useState(false);
 

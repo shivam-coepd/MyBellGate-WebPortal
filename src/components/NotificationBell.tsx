@@ -66,29 +66,70 @@ const NotificationBell: React.FC = () => {
 
   const fetchNotifications = useCallback(
     async (pageNum = 1, reset = false) => {
-      if (loading) return;
       setLoading(true);
       try {
         const res = await apiClient.getNotifications({
           page: pageNum,
           limit: LIMIT,
         });
-        const items: Notification[] = Array.isArray(res.data) ? res.data : [];
+
+        // The API may return:
+        // 1) res.data as an array: Notification[]
+        // 2) res.data as an object: { notifications: Notification[], unread_count: number, has_more: boolean }
+        // 3) res.data as { data: Notification[] }
+        let rawItems: any[] = [];
+        let hasMoreItems = false;
+        let countFromData: number | undefined;
+
+        if (Array.isArray(res?.data)) {
+          rawItems = res.data;
+          hasMoreItems = rawItems.length === LIMIT;
+        } else if (res?.data && typeof res.data === "object") {
+          const d: any = res.data;
+          if (Array.isArray(d.notifications)) {
+            rawItems = d.notifications;
+          } else if (Array.isArray(d.data)) {
+            rawItems = d.data;
+          } else if (Array.isArray(d.items)) {
+            rawItems = d.items;
+          }
+          if (typeof d.has_more === "boolean") {
+            hasMoreItems = d.has_more;
+          } else {
+            hasMoreItems = rawItems.length === LIMIT;
+          }
+          if (typeof d.unread_count === "number") {
+            countFromData = d.unread_count;
+          }
+        }
+
+        const items: Notification[] = rawItems.map((item) => ({
+          ...item,
+          is_read: item.is_read === true || item.is_read === 1 ? 1 : 0,
+        }));
+
         setNotifications((prev) => (reset ? items : [...prev, ...items]));
-        setHasMore(items.length === LIMIT);
+        setHasMore(hasMoreItems);
+        if (countFromData !== undefined) {
+          setUnreadCount(countFromData);
+        }
       } catch (e) {
         console.error("[NotificationBell] fetch error:", e);
       } finally {
         setLoading(false);
       }
     },
-    [loading],
+    [],
   );
 
   const fetchUnreadCount = useCallback(async () => {
     try {
       const res = await apiClient.getUnreadNotificationCount();
-      setUnreadCount((res.data as any)?.count ?? 0);
+      const count =
+        (res?.data as any)?.unread_count ??
+        (res?.data as any)?.count ??
+        (typeof res?.data === "number" ? res.data : 0);
+      setUnreadCount(Number(count) || 0);
     } catch (e) {
       // silently fail
     }
@@ -114,7 +155,7 @@ const NotificationBell: React.FC = () => {
         }
         // Rekindle listener
         listenForMessages();
-      } catch (err) {}
+      } catch (err) { }
     };
 
     listenForMessages();
@@ -159,7 +200,44 @@ const NotificationBell: React.FC = () => {
         console.error("[NotificationBell] mark read error:", e);
       }
     }
-    if (n.action_url) window.location.href = n.action_url;
+    if (n.action_url) {
+      let targetUrl = n.action_url;
+      // Map resident/backend route formats to admin web routes
+      if (
+        targetUrl === "/accounting/invoices" ||
+        targetUrl.startsWith("/accounting/invoices")
+      ) {
+        targetUrl = "/admin/accounting?tab=invoices";
+      } else if (
+        targetUrl === "/accounting/receipts" ||
+        targetUrl.startsWith("/accounting/receipts") ||
+        targetUrl === "/admin/accounting/payments" ||
+        targetUrl.startsWith("/admin/accounting/payments")
+      ) {
+        targetUrl = "/admin/accounting?tab=overview";
+      } else if (
+        targetUrl === "/staff/helpdesk" ||
+        targetUrl === "/helpdesk/tickets" ||
+        targetUrl.startsWith("/helpdesk")
+      ) {
+        targetUrl = "/admin/helpdesk";
+      } else if (
+        targetUrl === "/security/alerts" ||
+        targetUrl.startsWith("/security/alerts")
+      ) {
+        targetUrl = "/admin/security/alerts";
+      } else if (
+        targetUrl === "/admin/amenities/bookings" ||
+        targetUrl.startsWith("/admin/amenities/bookings") ||
+        targetUrl === "/amenities/bookings" ||
+        targetUrl.startsWith("/amenities/bookings") ||
+        targetUrl === "/admin/amenities" ||
+        targetUrl.startsWith("/admin/amenities")
+      ) {
+        targetUrl = "/admin/amenities";
+      }
+      window.location.href = targetUrl;
+    }
   };
 
   const markAllRead = async () => {

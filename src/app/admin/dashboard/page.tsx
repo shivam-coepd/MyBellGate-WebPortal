@@ -377,8 +377,8 @@ const SocietyAdminDashboard: React.FC = () => {
           <button
             onClick={() => setActiveTab("overview")}
             className={`px-4 py-2 font-medium whitespace-nowrap ${activeTab === "overview"
-                ? "border-b-2 border-blue-500 text-blue-600"
-                : "text-gray-500 hover:text-gray-700"
+              ? "border-b-2 border-blue-500 text-blue-600"
+              : "text-gray-500 hover:text-gray-700"
               }`}
           >
             Overview
@@ -429,7 +429,19 @@ const SocietyAdminDashboard: React.FC = () => {
             onClick={() => navigate.push("/admin/communications")}
             className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
           >
-            Communications
+            Announcements & Polls
+          </button>
+          <button
+            onClick={() => navigate.push("/admin/amenities")}
+            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
+          >
+            Amenities
+          </button>
+          <button
+            onClick={() => navigate.push("/admin/security/alerts")}
+            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
+          >
+            Security Alerts
           </button>
         </div>
       </div>
@@ -623,16 +635,34 @@ const SocietyAdminDashboard: React.FC = () => {
                   Manage Guards
                 </button>
                 <button
-                  onClick={() => navigate.push("/admin/guards")}
+                  onClick={() => navigate.push("/admin/community")}
                   className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition text-sm font-medium"
                 >
                   Community Management
                 </button>
                 <button
-                  onClick={() => navigate.push("/admin/community")}
+                  onClick={() => navigate.push("/admin/communications")}
                   className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition text-sm font-medium"
                 >
-                  Communications & Polls
+                  Announcements & Polls
+                </button>
+                <button
+                  onClick={() => navigate.push("/admin/helpdesk")}
+                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition text-sm font-medium"
+                >
+                  Helpdesk & Requests
+                </button>
+                <button
+                  onClick={() => navigate.push("/admin/amenities")}
+                  className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition text-sm font-medium"
+                >
+                  Amenities & Bookings
+                </button>
+                <button
+                  onClick={() => navigate.push("/admin/security/alerts")}
+                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
+                >
+                  Security Alerts
                 </button>
               </div>
             </div>

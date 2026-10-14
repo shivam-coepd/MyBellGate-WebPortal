@@ -1,7 +1,8 @@
 // API Client for MyGate Backend Integration
 const API_BASE_URL =
   // process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
-  process.env.NEXT_PUBLIC_API_URL || "https://magenta-grouse-563358.hostingersite.com/backend";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://magenta-grouse-563358.hostingersite.com/backend";
 
 interface ApiResponse<T = any> {
   success: boolean;
@@ -168,6 +169,31 @@ class ApiClient {
     return this.request("/users/profile", {
       method: "GET",
     });
+  }
+
+  // Upload
+  async uploadFile(file: File, folder = "amenities"): Promise<ApiResponse<{ url: string; object_key: string }>> {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("folder", folder);
+
+    const headers: Record<string, string> = {};
+    if (this.token) {
+      headers["Authorization"] = `Bearer ${this.token}`;
+    }
+
+    const response = await fetch(`${API_BASE_URL}/upload/file`, {
+      method: "POST",
+      headers,
+      body: fd,
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || data.error || "File upload failed");
+    }
+    data.success = data.status ?? data.success ?? true;
+    return data;
   }
 
   // Super Admin endpoints
@@ -445,6 +471,7 @@ class ApiClient {
     page?: number;
     limit?: number;
     is_draft?: number;
+    category?: string;
   }) {
     const queryString = new URLSearchParams(params as any).toString();
     return this.request(
@@ -456,6 +483,12 @@ class ApiClient {
     return this.request("/communications/announcements", {
       method: "POST",
       body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAnnouncement(id: number | string) {
+    return this.request(`/communications/announcements/${id}`, {
+      method: "DELETE",
     });
   }
 
@@ -485,13 +518,25 @@ class ApiClient {
     category?: string;
     priority?: string;
   }) {
-    const queryString = new URLSearchParams(params as any).toString();
+    const query = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, val]) => {
+        if (val !== undefined && val !== null && val !== "") {
+          query.append(key, String(val));
+        }
+      });
+    }
+    const queryString = query.toString();
     return this.request(
       `/helpdesk/tickets${queryString ? `?${queryString}` : ""}`,
     );
   }
 
-  async getTicket(id: string) {
+  async getTicket(id: string | number) {
+    return this.request(`/helpdesk/tickets/${id}`);
+  }
+
+  async getTicketById(id: string | number) {
     return this.request(`/helpdesk/tickets/${id}`);
   }
 
@@ -502,25 +547,40 @@ class ApiClient {
     });
   }
 
-  async updateTicketStatus(id: string, status: string) {
+  async updateTicketStatus(id: string | number, status: string) {
     return this.request(`/helpdesk/tickets/${id}/status`, {
-      method: "PUT",
+      method: "PATCH",
       body: JSON.stringify({ status }),
     });
   }
 
-  async assignTicket(id: string, assignedTo: string) {
+  async updateTicket(id: string | number, data: any) {
+    return this.request(`/helpdesk/tickets/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteTicket(id: string | number) {
+    return this.request(`/helpdesk/tickets/${id}`, { method: "DELETE" });
+  }
+
+  async assignTicket(id: string | number, assignedTo: string | number) {
     return this.request(`/helpdesk/tickets/${id}/assign`, {
       method: "PUT",
       body: JSON.stringify({ assigned_to: assignedTo }),
     });
   }
 
-  async addComment(ticketId: string, comment: string) {
+  async addComment(ticketId: string | number, comment: string) {
     return this.request(`/helpdesk/tickets/${ticketId}/comments`, {
       method: "POST",
       body: JSON.stringify({ comment }),
     });
+  }
+
+  async addTicketComment(ticketId: string | number, comment: string) {
+    return this.addComment(ticketId, comment);
   }
 
   // Amenities
@@ -551,11 +611,22 @@ class ApiClient {
     );
   }
 
-  async updateBookingStatus(bookingId: string, status: string) {
+  async updateBookingStatus(bookingId: string | number, status: string) {
     return this.request(`/amenities/bookings/${bookingId}/status`, {
       method: "PUT",
       body: JSON.stringify({ status }),
     });
+  }
+
+  async updateAmenity(id: string | number, data: any) {
+    return this.request(`/amenities/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteAmenity(id: string | number) {
+    return this.request(`/amenities/${id}`, { method: "DELETE" });
   }
 
   // Security
@@ -566,20 +637,36 @@ class ApiClient {
     severity?: string;
     alert_type?: string;
   }) {
-    const queryString = new URLSearchParams(params as any).toString();
+    const query = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, val]) => {
+        if (val !== undefined && val !== null && val !== "") {
+          query.append(key, String(val));
+        }
+      });
+    }
+    const queryString = query.toString();
     return this.request(
       `/security/alerts${queryString ? `?${queryString}` : ""}`,
     );
   }
 
-  async reportAlert(data: any) {
+  async getAlertById(id: string | number) {
+    return this.request(`/security/alerts/${id}`);
+  }
+
+  async createAlert(data: any) {
     return this.request("/security/alerts", {
       method: "POST",
       body: JSON.stringify(data),
     });
   }
 
-  async updateAlertStatus(id: string, status: string) {
+  async reportAlert(data: any) {
+    return this.createAlert(data);
+  }
+
+  async updateAlertStatus(id: string | number, status: string) {
     return this.request(`/security/alerts/${id}/status`, {
       method: "PUT",
       body: JSON.stringify({ status }),
@@ -764,21 +851,6 @@ class ApiClient {
       `/marketplace/products${queryString ? `?${queryString}` : ""}`,
     );
   }
-
-  // Communications & Polls
-  // async getPolls(params?: { page?: number; limit?: number }) {
-  //   const queryString = new URLSearchParams(params as any).toString();
-  //   return this.request(
-  //     `/communications/polls${queryString ? `?${queryString}` : ""}`,
-  //   );
-  // }
-
-  // async createPoll(data: any) {
-  //   return this.request("/communications/polls", {
-  //     method: "POST",
-  //     body: JSON.stringify(data),
-  //   });
-  // }
 
   async updatePoll(id: string | number, data: any) {
     return this.request(`/communications/polls/${id}`, {
