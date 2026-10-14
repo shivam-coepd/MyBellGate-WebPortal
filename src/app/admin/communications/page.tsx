@@ -15,6 +15,11 @@ import {
   CheckCircle,
   FileText,
   AlertCircle,
+  Bell,
+  Building,
+  User,
+  AlertTriangle,
+  Radio,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -53,12 +58,36 @@ interface Group {
   member_count?: number;
 }
 
+interface BuildingItem {
+  id: string | number;
+  name: string;
+}
+
+interface ResidentItem {
+  id: string | number;
+  name: string;
+  phone?: string;
+  flat_number?: string;
+}
+
+interface SentNotificationLog {
+  id: number;
+  title: string;
+  message: string;
+  type: string;
+  created_at: string;
+  is_read: number;
+  recipient_name: string;
+  recipient_phone: string;
+  flat_number?: string;
+}
+
 const CommunicationsManagement: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useRouter();
 
-  // Active tab: 'announcements' | 'polls'
-  const [activeTab, setActiveTab] = useState<"announcements" | "polls">(
+  // Active tab: 'announcements' | 'polls' | 'direct_alerts'
+  const [activeTab, setActiveTab] = useState<"announcements" | "polls" | "direct_alerts">(
     "announcements"
   );
 
@@ -94,6 +123,23 @@ const CommunicationsManagement: React.FC = () => {
     is_draft: 0,
   });
 
+  // Direct Push Alert / Notification State
+  const [buildings, setBuildings] = useState<BuildingItem[]>([]);
+  const [residents, setResidents] = useState<ResidentItem[]>([]);
+  const [sentLogs, setSentLogs] = useState<SentNotificationLog[]>([]);
+  const [loadingDirectAlerts, setLoadingDirectAlerts] = useState<boolean>(false);
+  const [showSendAlertModal, setShowSendAlertModal] = useState(false);
+
+  const [newDirectAlert, setNewDirectAlert] = useState({
+    title: "",
+    message: "",
+    target_type: "resident" as "resident" | "building",
+    user_id: "",
+    building_id: "",
+    type: "alert",
+    is_urgent: false,
+  });
+
   // Groups State (for targeting announcements)
   const [groups, setGroups] = useState<Group[]>([]);
 
@@ -106,6 +152,7 @@ const CommunicationsManagement: React.FC = () => {
     fetchAnnouncements();
     fetchPolls();
     fetchGroups();
+    fetchDirectAlertResources();
   }, []);
 
   const showSuccess = (msg: string) => {
@@ -147,6 +194,100 @@ const CommunicationsManagement: React.FC = () => {
       // Non-critical
     }
   }
+
+  // ----------------- Direct Alerts & Target Push -----------------
+  async function fetchDirectAlertResources() {
+    try {
+      setLoadingDirectAlerts(true);
+      // Fetch buildings
+      if (user?.society_id) {
+        const bRes = await apiClient.getBuildingsBySociety(user.society_id.toString());
+        if (bRes.success && bRes.data) {
+          const bList = Array.isArray(bRes.data) ? bRes.data : (bRes.data as any).data || [];
+          setBuildings(bList);
+        }
+      }
+
+      // Fetch active residents
+      const uRes = await apiClient.getUsers({ role: "resident", status: "active", limit: 200 });
+      if (uRes.success && uRes.data) {
+        const uList = Array.isArray(uRes.data) ? uRes.data : (uRes.data as any).data || [];
+        setResidents(uList);
+      }
+
+      // Fetch sent notifications history
+      const histRes = await apiClient.getSentNotificationsHistory({ limit: 50 });
+      if (histRes.success && histRes.data) {
+        const hList = Array.isArray(histRes.data) ? histRes.data : (histRes.data as any).data || [];
+        setSentLogs(hList);
+      }
+    } catch (err: any) {
+      console.error("Failed to load direct alert resources:", err);
+    } finally {
+      setLoadingDirectAlerts(false);
+    }
+  }
+
+  const handleSendDirectAlert = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDirectAlert.title.trim() || !newDirectAlert.message.trim()) {
+      alert("Please enter both title and message.");
+      return;
+    }
+
+    if (newDirectAlert.target_type === "resident" && !newDirectAlert.user_id) {
+      alert("Please select a target resident.");
+      return;
+    }
+
+    if (newDirectAlert.target_type === "building" && !newDirectAlert.building_id) {
+      alert("Please select a target building / wing.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload: any = {
+        title: newDirectAlert.title.trim(),
+        message: newDirectAlert.message.trim(),
+        target_type: newDirectAlert.target_type,
+        type: newDirectAlert.type,
+        is_urgent: newDirectAlert.is_urgent,
+      };
+
+      if (newDirectAlert.target_type === "resident") {
+        payload.user_id = Number(newDirectAlert.user_id);
+      } else {
+        payload.building_id = Number(newDirectAlert.building_id);
+      }
+
+      const res = await apiClient.sendCustomNotification(payload);
+
+      if (res.success) {
+        setShowSendAlertModal(false);
+        setNewDirectAlert({
+          title: "",
+          message: "",
+          target_type: "resident",
+          user_id: "",
+          building_id: "",
+          type: "alert",
+          is_urgent: false,
+        });
+        const resData = res.data as any;
+        showSuccess(
+          `Notification sent successfully to ${resData?.target_details || "recipients"} (${resData?.success_count || 1} delivered)!`
+        );
+        fetchDirectAlertResources();
+      } else {
+        throw new Error(res.message || "Failed to send notification");
+      }
+    } catch (err: any) {
+      alert(err.message || "Failed to send notification");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleCreateAnnouncement = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -412,6 +553,24 @@ const CommunicationsManagement: React.FC = () => {
                 }`}
             >
               {polls.length}
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab("direct_alerts")}
+            className={`flex items-center gap-2 px-6 py-4 font-semibold text-sm transition-all border-b-2 ${activeTab === "direct_alerts"
+              ? "border-amber-600 text-amber-600 bg-amber-50/40"
+              : "border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+              }`}
+          >
+            <Radio className="w-4 h-4" />
+            Direct Resident / Wing Push Alerts
+            <span
+              className={`ml-1.5 px-2 py-0.5 text-xs rounded-full ${activeTab === "direct_alerts"
+                ? "bg-amber-600 text-white"
+                : "bg-gray-200 text-gray-700"
+                }`}
+            >
+              {sentLogs.length}
             </span>
           </button>
         </div>
@@ -737,7 +896,398 @@ const CommunicationsManagement: React.FC = () => {
             )}
           </div>
         )}
+
+        {/* ======================================================== */}
+        {/* TAB 3: DIRECT RESIDENT / WING PUSH ALERTS */}
+        {/* ======================================================== */}
+        {activeTab === "direct_alerts" && (
+          <div>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+                  <Radio className="text-amber-600 w-5 h-5 animate-pulse" />
+                  Targeted Resident & Wing Push Alerts
+                </h2>
+                <p className="text-sm text-gray-500">
+                  Instantly push urgent alerts or specific notices directly to a single resident or all residents of a selected building / wing.
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={fetchDirectAlertResources}
+                  className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg shadow-sm hover:bg-gray-50 transition font-medium text-sm"
+                >
+                  Refresh
+                </button>
+                <button
+                  onClick={() => setShowSendAlertModal(true)}
+                  className="bg-amber-600 text-white px-4 py-2 rounded-lg shadow hover:bg-amber-700 transition flex items-center gap-1.5 font-medium text-sm"
+                >
+                  <Send size={16} /> Send Direct Push Alert
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Action Info Banner */}
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <div className="bg-amber-100 p-2 rounded-lg text-amber-700">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-amber-900">
+                    Targeted Push Notification Delivery
+                  </h4>
+                  <p className="text-xs text-amber-800 mt-0.5">
+                    Messages are delivered directly to the resident&apos;s mobile app tray via FCM and logged in their in-app Notifications center.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-semibold text-amber-800">
+                <span className="bg-white px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm flex items-center gap-1.5">
+                  <Building size={14} className="text-amber-600" /> {buildings.length} Wings/Buildings
+                </span>
+                <span className="bg-white px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm flex items-center gap-1.5">
+                  <User size={14} className="text-amber-600" /> {residents.length} Active Residents
+                </span>
+              </div>
+            </div>
+
+            {/* Sent Notification History */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
+                  <Clock size={16} className="text-gray-500" /> Sent Direct Alerts & Notifications History
+                </h3>
+                <span className="text-xs text-gray-500 font-medium">
+                  Showing last {sentLogs.length} transmissions
+                </span>
+              </div>
+
+              {loadingDirectAlerts ? (
+                <div className="p-12 text-center text-gray-500 text-sm">
+                  Loading notification logs...
+                </div>
+              ) : sentLogs.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Bell className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                  <p className="text-gray-600 font-medium text-sm">No direct alerts sent yet</p>
+                  <p className="text-gray-400 text-xs mt-1">
+                    Send your first targeted notification to a specific resident or building wing.
+                  </p>
+                  <button
+                    onClick={() => setShowSendAlertModal(true)}
+                    className="mt-4 bg-amber-600 text-white px-4 py-2 rounded-lg text-xs font-semibold hover:bg-amber-700 transition inline-flex items-center gap-1.5"
+                  >
+                    <Send size={14} /> Send First Alert
+                  </button>
+                </div>
+              ) : (
+                <div className="divide-y divide-gray-100">
+                  {sentLogs.map((log) => {
+                    const isAlert = log.type === "alert" || log.title.includes("🚨");
+                    return (
+                      <div
+                        key={log.id}
+                        className="p-5 hover:bg-gray-50/80 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
+                      >
+                        <div className="flex items-start gap-3 flex-grow">
+                          <div
+                            className={`p-2.5 rounded-full mt-0.5 ${
+                              isAlert
+                                ? "bg-red-100 text-red-600"
+                                : "bg-blue-100 text-blue-600"
+                            }`}
+                          >
+                            {isAlert ? <AlertTriangle size={18} /> : <Bell size={18} />}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h4 className="font-bold text-gray-900 text-sm">{log.title}</h4>
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                                  isAlert
+                                    ? "bg-red-100 text-red-700 border border-red-200"
+                                    : "bg-blue-100 text-blue-700 border border-blue-200"
+                                }`}
+                              >
+                                {log.type}
+                              </span>
+                              {log.is_read ? (
+                                <span className="text-[10px] text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-medium">
+                                  Read
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full font-medium">
+                                  Delivered
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-gray-600 text-xs mt-1 leading-relaxed">
+                              {log.message}
+                            </p>
+                            <div className="flex items-center gap-4 mt-2 text-[11px] text-gray-500">
+                              <span className="flex items-center gap-1 font-medium text-gray-700">
+                                <User size={12} className="text-gray-400" />
+                                {log.recipient_name}
+                                {log.flat_number && (
+                                  <span className="text-gray-500 font-normal">
+                                    ({log.flat_number})
+                                  </span>
+                                )}
+                              </span>
+                              {log.recipient_phone && (
+                                <span className="text-gray-400">{log.recipient_phone}</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="text-right text-xs text-gray-400 whitespace-nowrap self-end md:self-center">
+                          <Calendar size={12} className="inline mr-1" />
+                          {log.created_at
+                            ? new Date(log.created_at).toLocaleString()
+                            : "Recently"}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* ======================================================== */}
+      {/* MODAL: SEND TARGETED DIRECT PUSH ALERT */}
+      {/* ======================================================== */}
+      {showSendAlertModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-lg w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="bg-gradient-to-r from-amber-600 to-orange-600 px-6 py-4 flex justify-between items-center text-white">
+              <div className="flex items-center gap-2">
+                <Radio className="w-5 h-5 animate-pulse" />
+                <h3 className="font-bold text-lg">Push Direct Alert / Notification</h3>
+              </div>
+              <button
+                onClick={() => setShowSendAlertModal(false)}
+                className="text-white/80 hover:text-white text-2xl leading-none"
+              >
+                &times;
+              </button>
+            </div>
+
+            <form onSubmit={handleSendDirectAlert} className="p-6">
+              <div className="space-y-4">
+                {/* Target Scope Selection */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+                    Target Recipient Scope <span className="text-red-500">*</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          target_type: "resident",
+                        })
+                      }
+                      className={`p-3 rounded-lg border text-left transition flex items-center gap-2.5 ${
+                        newDirectAlert.target_type === "resident"
+                          ? "border-amber-600 bg-amber-50 text-amber-900 font-bold shadow-sm"
+                          : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                      }`}
+                    >
+                      <User size={18} className="text-amber-600" />
+                      <div>
+                        <div className="text-xs font-bold">Specific Resident</div>
+                        <div className="text-[10px] text-gray-500 font-normal">
+                          Single user / resident
+                        </div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          target_type: "building",
+                        })
+                      }
+                      className={`p-3 rounded-lg border text-left transition flex items-center gap-2.5 ${
+                        newDirectAlert.target_type === "building"
+                          ? "border-amber-600 bg-amber-50 text-amber-900 font-bold shadow-sm"
+                          : "border-gray-200 text-gray-600 hover:bg-gray-50"
+                      }`}
+                    >
+                      <Building size={18} className="text-amber-600" />
+                      <div>
+                        <div className="text-xs font-bold">Specific Wing / Building</div>
+                        <div className="text-[10px] text-gray-500 font-normal">
+                          All flats in selected wing
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Conditional selector: Resident vs Building */}
+                {newDirectAlert.target_type === "resident" ? (
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Select Resident User <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={newDirectAlert.user_id}
+                      onChange={(e) =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          user_id: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    >
+                      <option value="">-- Choose Resident --</option>
+                      {residents.map((r) => (
+                        <option key={r.id} value={r.id}>
+                          {r.name} {r.flat_number ? `(${r.flat_number})` : ""} - {r.phone || ""}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Select Wing / Building <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={newDirectAlert.building_id}
+                      onChange={(e) =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          building_id: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    >
+                      <option value="">-- Choose Building / Wing --</option>
+                      {buildings.map((b) => (
+                        <option key={b.id} value={b.id}>
+                          Building/Wing: {b.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Title and Category */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Notification Title <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newDirectAlert.title}
+                      onChange={(e) =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          title: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                      placeholder="e.g. Water Supply Interruption / Package at Gate"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 mb-1">
+                      Alert Type
+                    </label>
+                    <select
+                      value={newDirectAlert.type}
+                      onChange={(e) =>
+                        setNewDirectAlert({
+                          ...newDirectAlert,
+                          type: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    >
+                      <option value="alert">Security Alert</option>
+                      <option value="notice">Notice</option>
+                      <option value="maintenance">Maintenance</option>
+                      <option value="general">General</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Message Body */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Notification Message <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={newDirectAlert.message}
+                    onChange={(e) =>
+                      setNewDirectAlert({
+                        ...newDirectAlert,
+                        message: e.target.value,
+                      })
+                    }
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                    placeholder="Provide specific instructions or details for this resident or building wing..."
+                  />
+                </div>
+
+                {/* Urgent Checkbox */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="checkbox"
+                    id="is_urgent"
+                    checked={newDirectAlert.is_urgent}
+                    onChange={(e) =>
+                      setNewDirectAlert({
+                        ...newDirectAlert,
+                        is_urgent: e.target.checked,
+                      })
+                    }
+                    className="h-4 w-4 text-amber-600 rounded border-gray-300 focus:ring-amber-500"
+                  />
+                  <label htmlFor="is_urgent" className="text-xs font-medium text-gray-700 cursor-pointer flex items-center gap-1">
+                    <span className="text-red-600 font-bold">Mark as Urgent Alert</span> (Adds high-priority indicator 🚨 in push notification tray)
+                  </label>
+                </div>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-100 flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setShowSendAlertModal(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 font-medium text-sm flex items-center gap-1.5 disabled:opacity-50 shadow"
+                >
+                  <Send size={15} /> Send Push Alert Now
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* ======================================================== */}
       {/* MODAL: CREATE ANNOUNCEMENT */}

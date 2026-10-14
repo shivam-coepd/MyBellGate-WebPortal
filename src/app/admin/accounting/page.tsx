@@ -39,8 +39,16 @@ interface Invoice {
 interface Flat {
   id: string;
   flat_number: string;
+  building_id?: string | number;
   building_name?: string;
   owner_name?: string;
+}
+
+interface Building {
+  id: string | number;
+  name: string;
+  code?: string;
+  total_floors?: number;
 }
 
 const AccountingManagement: React.FC = () => {
@@ -50,7 +58,9 @@ const AccountingManagement: React.FC = () => {
   const [chargeHeads, setChargeHeads] = useState<ChargeHead[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
   const [flats, setFlats] = useState<Flat[]>([]);
+  const [buildings, setBuildings] = useState<Building[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submittingInvoice, setSubmittingInvoice] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "overview" | "charge-heads" | "invoices"
   >("overview");
@@ -66,6 +76,8 @@ const AccountingManagement: React.FC = () => {
 
   // Create Invoice State
   const [invoiceForm, setInvoiceForm] = useState({
+    target_type: "flat" as "flat" | "building",
+    building_id: "",
     flat_id: "",
     invoice_date: new Date().toISOString().split("T")[0],
     due_date: "",
@@ -91,13 +103,21 @@ const AccountingManagement: React.FC = () => {
         setChargeHeads(chargeHeadsRes.data as ChargeHead[]);
       if (invoicesRes.success) setInvoices(invoicesRes.data as Invoice[]);
 
-      // Fetch Flats
+      // Fetch Flats and Buildings
       if (user?.society_id) {
-        const flatsRes = await apiClient.getAllFlatsBySociety(
-          user.society_id.toString(),
-        );
-        if (flatsRes.success) {
-          setFlats(flatsRes.data as Flat[]);
+        const [flatsRes, buildingsRes] = await Promise.all([
+          apiClient.getAllFlatsBySociety(user.society_id.toString()),
+          apiClient.getBuildingsBySociety(user.society_id.toString()),
+        ]);
+
+        if (flatsRes.success && flatsRes.data) {
+          const flatList = Array.isArray(flatsRes.data) ? flatsRes.data : (flatsRes.data as any).data || [];
+          setFlats(flatList as Flat[]);
+        }
+
+        if (buildingsRes.success && buildingsRes.data) {
+          const bList = Array.isArray(buildingsRes.data) ? buildingsRes.data : (buildingsRes.data as any).data || [];
+          setBuildings(bList as Building[]);
         }
       }
     } catch (error) {
@@ -187,7 +207,20 @@ const AccountingManagement: React.FC = () => {
 
   const handleCreateInvoice = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!invoiceForm.flat_id) return alert("Please select a flat");
+
+    if (invoiceForm.target_type === "building") {
+      if (!invoiceForm.building_id) {
+        return alert("Please select a building / wing");
+      }
+    } else {
+      if (!invoiceForm.building_id) {
+        return alert("Please select a building first");
+      }
+      if (!invoiceForm.flat_id) {
+        return alert("Please select a flat");
+      }
+    }
+
     if (
       invoiceItems.some(
         (i) => !i.charge_head_id || i.unit_price < 0 || i.quantity <= 0,
@@ -197,14 +230,31 @@ const AccountingManagement: React.FC = () => {
     }
 
     try {
-      const response = await apiClient.createInvoice({
-        ...invoiceForm,
+      setSubmittingInvoice(true);
+      const payload: any = {
+        target_type: invoiceForm.target_type,
+        building_id: invoiceForm.building_id,
+        invoice_date: invoiceForm.invoice_date,
+        due_date: invoiceForm.due_date,
+        notes: invoiceForm.notes,
         items: invoiceItems,
-      });
+      };
+
+      if (invoiceForm.target_type === "flat") {
+        payload.flat_id = invoiceForm.flat_id;
+      }
+
+      const response = await apiClient.createInvoice(payload);
       if (response.success) {
-        alert("Invoice created successfully");
+        alert(
+          invoiceForm.target_type === "building"
+            ? `Successfully created invoices for building residents!`
+            : "Invoice created successfully!"
+        );
         setShowCreateInvoiceModal(false);
         setInvoiceForm({
+          target_type: "flat",
+          building_id: "",
           flat_id: "",
           invoice_date: new Date().toISOString().split("T")[0],
           due_date: "",
@@ -212,9 +262,13 @@ const AccountingManagement: React.FC = () => {
         });
         setInvoiceItems([{ charge_head_id: "", unit_price: 0, quantity: 1 }]);
         loadData();
+      } else {
+        alert(response.message || "Failed to create invoice");
       }
-    } catch (error) {
-      alert("Error creating invoice");
+    } catch (error: any) {
+      alert(error?.message || "Error creating invoice");
+    } finally {
+      setSubmittingInvoice(false);
     }
   };
 
@@ -660,35 +714,147 @@ const AccountingManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl p-6 max-h-[90vh] overflow-y-auto">
             <h2 className="text-xl font-semibold mb-4">
-              Create Detailed Invoice
+              Create Invoice / Bill
             </h2>
 
             <form onSubmit={handleCreateInvoice} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              {/* Target Type Selector */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Invoice Recipient *
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        target_type: "flat",
+                        flat_id: "",
+                      })
+                    }
+                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border text-sm font-medium transition ${
+                      invoiceForm.target_type === "flat"
+                        ? "border-blue-600 bg-blue-50 text-blue-700 font-semibold ring-2 ring-blue-500/20"
+                        : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>🏢 Single Flat (Choose Building ➔ Flat)</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setInvoiceForm({
+                        ...invoiceForm,
+                        target_type: "building",
+                        flat_id: "",
+                      })
+                    }
+                    className={`flex items-center justify-center gap-2 p-3 rounded-lg border text-sm font-medium transition ${
+                      invoiceForm.target_type === "building"
+                        ? "border-blue-600 bg-blue-50 text-blue-700 font-semibold ring-2 ring-blue-500/20"
+                        : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>👥 Entire Building (All Residents)</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Building Selection (Required for both) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Select Flat *
+                    Select Building / Wing *
                   </label>
                   <select
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    value={invoiceForm.flat_id}
+                    value={invoiceForm.building_id}
                     onChange={(e) =>
                       setInvoiceForm({
                         ...invoiceForm,
-                        flat_id: e.target.value,
+                        building_id: e.target.value,
+                        flat_id: "", // Reset flat when building changes
                       })
                     }
                     required
                   >
-                    <option value="">-- Choose Flat --</option>
-                    {flats.map((f) => (
-                      <option key={f.id} value={f.id}>
-                        {f.building_name ? `${f.building_name} - ` : ""}
-                        {f.flat_number}
+                    <option value="">-- Choose Building / Wing --</option>
+                    {buildings.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name} {b.code ? `(${b.code})` : ""}
                       </option>
                     ))}
                   </select>
                 </div>
+
+                {/* If Single Flat: Choose Flat filtered by selected building */}
+                {invoiceForm.target_type === "flat" ? (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Select Flat *
+                    </label>
+                    <select
+                      className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      value={invoiceForm.flat_id}
+                      onChange={(e) =>
+                        setInvoiceForm({
+                          ...invoiceForm,
+                          flat_id: e.target.value,
+                        })
+                      }
+                      disabled={!invoiceForm.building_id}
+                      required
+                    >
+                      <option value="">
+                        {!invoiceForm.building_id
+                          ? "« Please select a building first"
+                          : "-- Choose Flat --"}
+                      </option>
+                      {flats
+                        .filter(
+                          (f) =>
+                            !invoiceForm.building_id ||
+                            f.building_id?.toString() === invoiceForm.building_id.toString()
+                        )
+                        .map((f) => (
+                          <option key={f.id} value={f.id}>
+                            Flat {f.flat_number} {f.owner_name ? `(${f.owner_name})` : ""}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                ) : (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Billing Scope Info
+                    </label>
+                    <div className="px-4 py-2 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs leading-relaxed">
+                      {invoiceForm.building_id ? (
+                        <>
+                          Generating invoices for{" "}
+                          <strong>
+                            {
+                              flats.filter(
+                                (f) =>
+                                  f.building_id?.toString() ===
+                                  invoiceForm.building_id.toString()
+                              ).length
+                            }{" "}
+                            flats
+                          </strong>{" "}
+                          in the selected building.
+                        </>
+                      ) : (
+                        "Select a building to preview target flat count."
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Invoice Date & Due Date */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Invoice Date *
@@ -846,15 +1012,21 @@ const AccountingManagement: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateInvoiceModal(false)}
+                  disabled={submittingInvoice}
                   className="flex-1 px-4 py-2 border rounded-lg hover:bg-gray-50 transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                  disabled={submittingInvoice}
+                  className="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition disabled:opacity-50 font-medium"
                 >
-                  Create Invoice
+                  {submittingInvoice
+                    ? "Generating Invoice(s)..."
+                    : invoiceForm.target_type === "building"
+                    ? "Generate Building Invoices"
+                    : "Create Flat Invoice"}
                 </button>
               </div>
             </form>

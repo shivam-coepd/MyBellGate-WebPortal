@@ -832,6 +832,28 @@ class ApiClient {
     });
   }
 
+  async sendCustomNotification(data: {
+    title: string;
+    message: string;
+    target_type: "resident" | "building";
+    user_id?: number | string;
+    building_id?: number | string;
+    type?: string;
+    is_urgent?: boolean;
+  }) {
+    return this.request("/notifications/send", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getSentNotificationsHistory(params?: { limit?: number }) {
+    const queryString = new URLSearchParams(params as any).toString();
+    return this.request(
+      `/notifications/sent-history${queryString ? `?${queryString}` : ""}`,
+    );
+  }
+
   // Community Management
   async getCommunityPosts(params?: { page?: number; limit?: number }) {
     const queryString = new URLSearchParams(params as any).toString();
