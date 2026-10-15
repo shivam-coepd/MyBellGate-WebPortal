@@ -75,6 +75,21 @@ class ApiClient {
       console.warn("No token available for request to:", endpoint);
     }
 
+    // Inject client local timestamp (YYYY-MM-DD HH:mm:ss) into X-Device-Time header
+    const method = (options.method || "GET").toUpperCase();
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(method)) {
+      const now = new Date();
+      // Format as local time 'YYYY-MM-DD HH:mm:ss'
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const localDeviceTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      headers["X-Device-Time"] = localDeviceTime;
+    }
+
     try {
       const response = await fetch(url, {
         ...options,
