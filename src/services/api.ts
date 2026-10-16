@@ -304,6 +304,20 @@ class ApiClient {
     });
   }
 
+  async createSocietyAdmin(societyId: string, data: any) {
+    return this.request(`/superadmin/societies/${societyId}/admin`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateSocietyAdminUser(societyId: string, data: any) {
+    return this.request(`/superadmin/societies/${societyId}/admin`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
   // Admin endpoints
   async getCompleteSociety(id: string) {
     return this.request(`/admin/societies/${id}/complete`);
