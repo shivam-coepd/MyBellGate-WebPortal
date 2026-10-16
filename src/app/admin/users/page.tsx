@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 interface User {
   id: string;
@@ -73,12 +74,12 @@ const UserManagement: React.FC = () => {
 
   if (loading && users.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 max-w-7xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 w-full mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-6 w-full animate-pulse flex justify-between">
           <div className="h-8 bg-gray-200 rounded w-1/4"></div>
           <div className="h-10 bg-gray-200 rounded w-32"></div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
@@ -208,37 +209,22 @@ const UserManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => router.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                User Management
-              </h1>
-              <p className="text-gray-500">Manage all users in your society</p>
-            </div>
-          </div>
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center space-x-2"
-          >
-            <Plus className="w-5 h-5" />
-            <span>Add User</span>
-          </button>
-        </div>
-      </header>
-
-      {/* Filters */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+    <AdminPageShell
+      icon={<Users className="w-6 h-6 text-blue-600" />}
+      title="User Management"
+      subtitle="Manage all users, residents, guards, and staff in your society"
+      actions={
+        <button
+          onClick={() => setShowAddModal(true)}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 text-sm font-medium shadow-xs"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add User</span>
+        </button>
+      }
+    >
+      <div>
+        {/* Filters */}
         <div className="bg-white rounded-lg shadow-md p-4 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="relative">
@@ -605,7 +591,7 @@ const UserManagement: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 };
 

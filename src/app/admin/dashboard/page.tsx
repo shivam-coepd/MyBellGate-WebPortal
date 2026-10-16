@@ -17,6 +17,7 @@ import {
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
 import NotificationBell from "../../../components/NotificationBell";
+import AdminSidebar from "../../../components/AdminSidebar";
 
 interface SocietyData {
   id: number;
@@ -240,7 +241,7 @@ const SocietyAdminDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 max-w-7xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 w-full mx-auto">
         {/* Header Skeleton */}
         <div className="bg-white rounded-lg shadow-sm p-6 w-full animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -347,348 +348,294 @@ const SocietyAdminDashboard: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-800">
-              {societyData?.name}
-            </h1>
-            <p className="text-gray-500">
-              Admin Dashboard - {societyData?.city}, {societyData?.state}
-            </p>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Persistent Left Sidebar */}
+      <AdminSidebar
+        currentTab={activeTab}
+        onTabChange={(tab) => setActiveTab(tab as any)}
+        societyName={societyData?.name}
+        societyLocation={societyData ? `${societyData.city}, ${societyData.state}` : undefined}
+      />
+
+      {/* Main Content Area (offset by left sidebar on desktop) */}
+      <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
+        {/* Top Header matching other admin portal pages like daily-help & amenities */}
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-xs">
+          <div className="w-full mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-blue-50 border border-blue-100 rounded-xl text-blue-600 flex-shrink-0">
+                  <Building2 className="w-6 h-6" />
+                </div>
+                <div>
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+                    {societyData?.name || "Society Dashboard"}
+                  </h1>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Admin Dashboard &bull; {societyData?.city}, {societyData?.state}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <NotificationBell />
+                <button
+                  onClick={logout}
+                  className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-sm font-medium px-4 py-2 rounded-lg transition"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <NotificationBell />
+        </header>
+
+        {/* Content */}
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full">
+          {activeTab === "overview" && societyData && (
+            <div>
+              {/* Society Info */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                  Society Information
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
+                    <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Society Code</p>
+                    <p className="font-bold text-gray-900 text-lg mt-1 font-mono">
+                      {societyData.code || user?.society_code || "N/A"}
+                    </p>
+                  </div>
+                  <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
+                    <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Plan</p>
+                    <p className="font-bold text-blue-600 text-lg mt-1 capitalize">
+                      {societyData.plan || "starter"}
+                    </p>
+                  </div>
+                  <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
+                    <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Towers</p>
+                    <p className="font-bold text-gray-900 text-lg mt-1">
+                      {societyData.towers ?? (societyData as any).buildings?.length ?? 0}
+                    </p>
+                  </div>
+                  <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
+                    <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Flats</p>
+                    <p className="font-bold text-gray-900 text-lg mt-1">
+                      {societyData.total_flats ?? 0}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <StatCard
+                  title="Total Users"
+                  value={societyData.user_statistics.total_users}
+                  icon={<Users className="w-6 h-6 text-white" />}
+                  color="bg-blue-500"
+                />
+                <StatCard
+                  title="Active Users"
+                  value={societyData.user_statistics.active_users}
+                  icon={<CheckCircle className="w-6 h-6 text-white" />}
+                  color="bg-green-500"
+                />
+                <StatCard
+                  title="Total Revenue"
+                  value={`₹${societyData.financial_summary.total_revenue.toLocaleString()}`}
+                  icon={<DollarSign className="w-6 h-6 text-white" />}
+                  color="bg-purple-500"
+                />
+                <StatCard
+                  title="Open Tickets"
+                  value={societyData.helpdesk_summary.open_tickets}
+                  icon={<AlertCircle className="w-6 h-6 text-white" />}
+                  color="bg-orange-500"
+                />
+              </div>
+
+              {/* User Statistics */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">User Statistics</h2>
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <p className="text-2xl font-bold text-blue-600">
+                      {societyData.user_statistics.residents}
+                    </p>
+                    <p className="text-sm text-gray-600">Residents</p>
+                  </div>
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <p className="text-2xl font-bold text-green-600">
+                      {societyData.user_statistics.guards}
+                    </p>
+                    <p className="text-sm text-gray-600">Guards</p>
+                  </div>
+                  <div className="text-center p-4 bg-purple-50 rounded-lg">
+                    <p className="text-2xl font-bold text-purple-600">
+                      {societyData.user_statistics.staff}
+                    </p>
+                    <p className="text-sm text-gray-600">Staff</p>
+                  </div>
+                  <div className="text-center p-4 bg-yellow-50 rounded-lg">
+                    <p className="text-2xl font-bold text-yellow-600">
+                      {societyData.user_statistics.admins}
+                    </p>
+                    <p className="text-sm text-gray-600">Admins</p>
+                  </div>
+                  <div className="text-center p-4 bg-red-50 rounded-lg">
+                    <p className="text-2xl font-bold text-red-600">
+                      {societyData.user_statistics.inactive_users}
+                    </p>
+                    <p className="text-sm text-gray-600">Inactive</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Financial Summary */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h2 className="text-xl font-semibold mb-4">Financial Summary</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="p-4 bg-green-50 rounded-lg">
+                    <p className="text-sm text-gray-600">Total Revenue</p>
+                    <p className="text-xl font-bold text-green-600">
+                      ₹
+                      {societyData.financial_summary.total_revenue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-blue-50 rounded-lg">
+                    <p className="text-sm text-gray-600">Paid Revenue</p>
+                    <p className="text-xl font-bold text-blue-600">
+                      ₹
+                      {societyData.financial_summary.paid_revenue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-yellow-50 rounded-lg">
+                    <p className="text-sm text-gray-600">Pending Revenue</p>
+                    <p className="text-xl font-bold text-yellow-600">
+                      ₹
+                      {societyData.financial_summary.pending_revenue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-red-50 rounded-lg">
+                    <p className="text-sm text-gray-600">Overdue Revenue</p>
+                    <p className="text-xl font-bold text-red-600">
+                      ₹
+                      {societyData.financial_summary.overdue_revenue.toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <Package className="w-6 h-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Total Assets</p>
+                      <p className="text-2xl font-bold">
+                        {societyData.assets_summary.total_assets}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-green-100 rounded-full">
+                      <Wrench className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Active Assets</p>
+                      <p className="text-2xl font-bold">
+                        {societyData.assets_summary.active_assets}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-purple-100 rounded-full">
+                      <Shield className="w-6 h-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-gray-500 text-sm">Total Vehicles</p>
+                      <p className="text-2xl font-bold">
+                        {societyData.total_vehicles}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="bg-white rounded-lg shadow-md p-6 mt-6">
+                <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+                <div className="flex flex-wrap gap-4">
+                  <button
+                    onClick={() => navigate.push("/admin/users")}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition text-sm font-medium"
+                  >
+                    Manage Users
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/guards")}
+                    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition text-sm font-medium"
+                  >
+                    Manage Guards
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/community")}
+                    className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition text-sm font-medium"
+                  >
+                    Community Management
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/communications")}
+                    className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition text-sm font-medium"
+                  >
+                    Announcements & Polls
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/helpdesk")}
+                    className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition text-sm font-medium"
+                  >
+                    Helpdesk & Requests
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/amenities")}
+                    className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition text-sm font-medium"
+                  >
+                    Amenities & Bookings
+                  </button>
+                  <button
+                    onClick={() => navigate.push("/admin/security/alerts")}
+                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
+                  >
+                    Security Alerts
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+        </div>
+        {/* Snackbar Error Popup */}
+        {error && (
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 transition-all duration-300">
+            <AlertCircle className="w-5 h-5" />
+            <span className="font-medium text-sm">{error}</span>
             <button
-              onClick={logout}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
+              onClick={() => setError(null)}
+              className="ml-4 hover:text-red-200 text-lg leading-none"
             >
-              Logout
+              &times;
             </button>
           </div>
-        </div>
-      </header>
-
-      {/* Navigation Tabs */}
-      <div className="max-w-7xl mx-auto px-4 mt-6">
-        <div className="flex space-x-4 border-b overflow-x-auto">
-          <button
-            onClick={() => setActiveTab("overview")}
-            className={`px-4 py-2 font-medium whitespace-nowrap ${activeTab === "overview"
-              ? "border-b-2 border-blue-500 text-blue-600"
-              : "text-gray-500 hover:text-gray-700"
-              }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/users")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Users
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/buildings")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Buildings & Flats
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/accounting")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Finance
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/helpdesk")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Helpdesk
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/guards")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Guards
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/community")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Community
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/events")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Events
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/communications")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Announcements & Polls
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/amenities")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Amenities
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/security/alerts")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700"
-          >
-            Security Alerts
-          </button>
-          <button
-            onClick={() => navigate.push("/admin/visitors/daily-help")}
-            className="px-4 py-2 font-medium whitespace-nowrap text-gray-500 hover:text-gray-700 flex items-center gap-1.5"
-          >
-            Daily Help & Static QR
-          </button>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {activeTab === "overview" && societyData && (
-          <div>
-            {/* Society Info */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">
-                Society Information
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                  <p className="text-gray-500 text-sm">Society Code</p>
-                  <p className="font-semibold">{societyData.code}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Plan</p>
-                  <p className="font-semibold capitalize">{societyData.plan}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Total Towers</p>
-                  <p className="font-semibold">{societyData.towers}</p>
-                </div>
-                <div>
-                  <p className="text-gray-500 text-sm">Total Flats</p>
-                  <p className="font-semibold">{societyData.total_flats}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-              <StatCard
-                title="Total Users"
-                value={societyData.user_statistics.total_users}
-                icon={<Users className="w-6 h-6 text-white" />}
-                color="bg-blue-500"
-              />
-              <StatCard
-                title="Active Users"
-                value={societyData.user_statistics.active_users}
-                icon={<CheckCircle className="w-6 h-6 text-white" />}
-                color="bg-green-500"
-              />
-              <StatCard
-                title="Total Revenue"
-                value={`₹${societyData.financial_summary.total_revenue.toLocaleString()}`}
-                icon={<DollarSign className="w-6 h-6 text-white" />}
-                color="bg-purple-500"
-              />
-              <StatCard
-                title="Open Tickets"
-                value={societyData.helpdesk_summary.open_tickets}
-                icon={<AlertCircle className="w-6 h-6 text-white" />}
-                color="bg-orange-500"
-              />
-            </div>
-
-            {/* User Statistics */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">User Statistics</h2>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <p className="text-2xl font-bold text-blue-600">
-                    {societyData.user_statistics.residents}
-                  </p>
-                  <p className="text-sm text-gray-600">Residents</p>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-lg">
-                  <p className="text-2xl font-bold text-green-600">
-                    {societyData.user_statistics.guards}
-                  </p>
-                  <p className="text-sm text-gray-600">Guards</p>
-                </div>
-                <div className="text-center p-4 bg-purple-50 rounded-lg">
-                  <p className="text-2xl font-bold text-purple-600">
-                    {societyData.user_statistics.staff}
-                  </p>
-                  <p className="text-sm text-gray-600">Staff</p>
-                </div>
-                <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-2xl font-bold text-yellow-600">
-                    {societyData.user_statistics.admins}
-                  </p>
-                  <p className="text-sm text-gray-600">Admins</p>
-                </div>
-                <div className="text-center p-4 bg-red-50 rounded-lg">
-                  <p className="text-2xl font-bold text-red-600">
-                    {societyData.user_statistics.inactive_users}
-                  </p>
-                  <p className="text-sm text-gray-600">Inactive</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Financial Summary */}
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Financial Summary</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Total Revenue</p>
-                  <p className="text-xl font-bold text-green-600">
-                    ₹
-                    {societyData.financial_summary.total_revenue.toLocaleString()}
-                  </p>
-                </div>
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Paid Revenue</p>
-                  <p className="text-xl font-bold text-blue-600">
-                    ₹
-                    {societyData.financial_summary.paid_revenue.toLocaleString()}
-                  </p>
-                </div>
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Pending Revenue</p>
-                  <p className="text-xl font-bold text-yellow-600">
-                    ₹
-                    {societyData.financial_summary.pending_revenue.toLocaleString()}
-                  </p>
-                </div>
-                <div className="p-4 bg-red-50 rounded-lg">
-                  <p className="text-sm text-gray-600">Overdue Revenue</p>
-                  <p className="text-xl font-bold text-red-600">
-                    ₹
-                    {societyData.financial_summary.overdue_revenue.toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-blue-100 rounded-full">
-                    <Package className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Total Assets</p>
-                    <p className="text-2xl font-bold">
-                      {societyData.assets_summary.total_assets}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-green-100 rounded-full">
-                    <Wrench className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Active Assets</p>
-                    <p className="text-2xl font-bold">
-                      {societyData.assets_summary.active_assets}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="p-3 bg-purple-100 rounded-full">
-                    <Shield className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-sm">Total Vehicles</p>
-                    <p className="text-2xl font-bold">
-                      {societyData.total_vehicles}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-md p-6 mt-6">
-              <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => navigate.push("/admin/users")}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition text-sm font-medium"
-                >
-                  Manage Users
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/guards")}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition text-sm font-medium"
-                >
-                  Manage Guards
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/community")}
-                  className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition text-sm font-medium"
-                >
-                  Community Management
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/communications")}
-                  className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition text-sm font-medium"
-                >
-                  Announcements & Polls
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/helpdesk")}
-                  className="bg-teal-500 text-white px-4 py-2 rounded-lg hover:bg-teal-600 transition text-sm font-medium"
-                >
-                  Helpdesk & Requests
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/amenities")}
-                  className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition text-sm font-medium"
-                >
-                  Amenities & Bookings
-                </button>
-                <button
-                  onClick={() => navigate.push("/admin/security/alerts")}
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium"
-                >
-                  Security Alerts
-                </button>
-              </div>
-            </div>
-          </div>
         )}
-
       </div>
-      {/* Snackbar Error Popup */}
-      {error && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 z-50 transition-all duration-300">
-          <AlertCircle className="w-5 h-5" />
-          <span className="font-medium text-sm">{error}</span>
-          <button
-            onClick={() => setError(null)}
-            className="ml-4 hover:text-red-200 text-lg leading-none"
-          >
-            &times;
-          </button>
-        </div>
-      )}
     </div>
   );
 };

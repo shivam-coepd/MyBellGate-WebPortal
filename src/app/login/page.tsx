@@ -251,7 +251,7 @@ export default Login;
 //           // Guards and residents use the mobile app — show a friendly message
 //           navigate.push("/login");
 //           setError(
-//             "This portal is for administrators only. Please use the MyGate mobile app.",
+//             "This portal is for administrators only. Please use the MyGateBell mobile app.",
 //           );
 //         }
 //       }
@@ -266,7 +266,7 @@ export default Login;
 //     <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-4">
 //       <div className="bg-white rounded-lg shadow-xl w-full max-w-md p-8">
 //         <div className="text-center mb-8">
-//           <h1 className="text-3xl font-bold text-gray-800">MyGate</h1>
+//           <h1 className="text-3xl font-bold text-gray-800">MyGateBell</h1>
 //           <p className="text-gray-600 mt-2">Admin Portal Login</p>
 //         </div>
 

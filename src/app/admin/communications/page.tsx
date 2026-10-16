@@ -24,6 +24,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 interface Poll {
   id: number;
@@ -208,21 +209,29 @@ const CommunicationsManagement: React.FC = () => {
         }
       }
 
-      // Fetch active residents
-      const uRes = await apiClient.getUsers({ role: "resident", status: "active", limit: 200 });
-      if (uRes.success && uRes.data) {
-        const uList = Array.isArray(uRes.data) ? uRes.data : (uRes.data as any).data || [];
-        setResidents(uList);
+      // Fetch active residents (optional)
+      try {
+        const uRes = await apiClient.getUsers({ role: "resident", status: "active", limit: 200 });
+        if (uRes.success && uRes.data) {
+          const uList = Array.isArray(uRes.data) ? uRes.data : (uRes.data as any).data || [];
+          setResidents(uList);
+        }
+      } catch (uErr) {
+        // Non-critical: resident list fallback
       }
 
-      // Fetch sent notifications history
-      const histRes = await apiClient.getSentNotificationsHistory({ limit: 50 });
-      if (histRes.success && histRes.data) {
-        const hList = Array.isArray(histRes.data) ? histRes.data : (histRes.data as any).data || [];
-        setSentLogs(hList);
+      // Fetch sent notifications history (optional)
+      try {
+        const histRes = await apiClient.getSentNotificationsHistory({ limit: 50 });
+        if (histRes.success && histRes.data) {
+          const hList = Array.isArray(histRes.data) ? histRes.data : (histRes.data as any).data || [];
+          setSentLogs(hList);
+        }
+      } catch (hErr) {
+        // Non-critical: sent history fallback
       }
     } catch (err: any) {
-      console.error("Failed to load direct alert resources:", err);
+      console.warn("Notice: optional direct alert resources not fully available:", err?.message || err);
     } finally {
       setLoadingDirectAlerts(false);
     }
@@ -486,37 +495,12 @@ const CommunicationsManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b mb-6">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-                <span>Communications & Announcements</span>
-              </h1>
-              <p className="text-sm text-gray-500">{user?.society_name}</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={logout}
-              className="bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 text-sm font-medium"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 pb-12">
+    <AdminPageShell
+      icon={<Megaphone className="w-6 h-6 text-blue-600" />}
+      title="Communications & Announcements"
+      subtitle={user?.society_name || "Publish society notices, send circulars, and organize community polls"}
+    >
+      <div className="pb-12">
         {/* Navigation Tabs */}
         <div className="flex border-b border-gray-200 mb-6 bg-white rounded-t-lg shadow-sm">
           <button
@@ -1670,7 +1654,7 @@ const CommunicationsManagement: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 };
 

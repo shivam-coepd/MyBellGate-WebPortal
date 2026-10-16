@@ -4,6 +4,7 @@ import { Building2, Plus, Edit, Trash2, Layers, Home, ArrowLeft } from "lucide-r
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 interface Building {
   id: string;
@@ -106,12 +107,12 @@ const BuildingManagement: React.FC = () => {
 
   if (loading && buildings.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 max-w-7xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-6 flex flex-col gap-6 w-full mx-auto">
         <div className="bg-white rounded-lg shadow-sm p-6 w-full animate-pulse flex justify-between">
           <div className="h-8 bg-gray-200 rounded w-1/4"></div>
           <div className="h-10 bg-gray-200 rounded w-32"></div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="bg-white rounded-lg shadow-sm p-6 animate-pulse">
@@ -213,50 +214,32 @@ const BuildingManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+    <AdminPageShell
+      icon={<Building2 className="w-6 h-6 text-blue-600" />}
+      title="Building & Flat Management"
+      subtitle="Manage buildings, towers, wings, and flats in your society"
+      actions={
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowAddBuildingModal(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition flex items-center space-x-2 text-sm font-medium shadow-xs"
+          >
+            <Building2 className="w-4 h-4" />
+            <span>Add Building</span>
+          </button>
+          {selectedBuilding && (
             <button
-              onClick={() => router.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
+              onClick={() => setShowAddFlatsModal(true)}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition flex items-center space-x-2 text-sm font-medium shadow-xs"
             >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
+              <Home className="w-4 h-4" />
+              <span>Add Flats</span>
             </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800">
-                Building & Flat Management
-              </h1>
-              <p className="text-gray-500">
-                Manage buildings and flats in your society
-              </p>
-            </div>
-          </div>
-          <div className="space-x-2">
-            <button
-              onClick={() => setShowAddBuildingModal(true)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition flex items-center space-x-2"
-            >
-              <Building2 className="w-5 h-5" />
-              <span>Add Building</span>
-            </button>
-            {selectedBuilding && (
-              <button
-                onClick={() => setShowAddFlatsModal(true)}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center space-x-2"
-              >
-                <Home className="w-5 h-5" />
-                <span>Add Flats</span>
-              </button>
-            )}
-          </div>
+          )}
         </div>
-      </header>
-
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      }
+    >
+      <div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Buildings List */}
           <div className="lg:col-span-1">
@@ -279,11 +262,10 @@ const BuildingManagement: React.FC = () => {
                     <div
                       key={building.id}
                       onClick={() => setSelectedBuilding(building)}
-                      className={`p-4 rounded-lg cursor-pointer transition ${
-                        selectedBuilding?.id === building.id
+                      className={`p-4 rounded-lg cursor-pointer transition ${selectedBuilding?.id === building.id
                           ? "bg-blue-50 border-2 border-blue-500"
                           : "bg-gray-50 hover:bg-gray-100 border-2 border-transparent"
-                      }`}
+                        }`}
                     >
                       <div className="font-medium text-gray-900">
                         {building.name}
@@ -327,11 +309,10 @@ const BuildingManagement: React.FC = () => {
                       {flats.map((flat) => (
                         <div
                           key={flat.id}
-                          className={`p-4 rounded-lg border-2 ${
-                            flat.is_occupied
+                          className={`p-4 rounded-lg border-2 ${flat.is_occupied
                               ? "bg-green-50 border-green-200"
                               : "bg-gray-50 border-gray-200"
-                          }`}
+                            }`}
                         >
                           <div className="flex justify-between items-start mb-2">
                             <div>
@@ -344,11 +325,10 @@ const BuildingManagement: React.FC = () => {
                               </div>
                             </div>
                             <span
-                              className={`px-2 py-1 text-xs rounded-full ${
-                                flat.is_occupied
+                              className={`px-2 py-1 text-xs rounded-full ${flat.is_occupied
                                   ? "bg-green-100 text-green-800"
                                   : "bg-gray-100 text-gray-800"
-                              }`}
+                                }`}
                             >
                               {flat.is_occupied ? "Occupied" : "Vacant"}
                             </span>
@@ -666,7 +646,7 @@ const BuildingManagement: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 };
 

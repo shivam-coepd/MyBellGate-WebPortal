@@ -4,6 +4,7 @@ import { Trash2, MessageSquare, Heart, Image as ImageIcon, ArrowLeft } from "luc
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 interface Post {
   id: number;
@@ -72,46 +73,20 @@ const CommunityManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b mb-6">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-                <span>Community Management</span>
-              </h1>
-              <p className="text-sm text-gray-500">{user?.society_name}</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={logout}
-              className="bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 text-sm"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Posts</h2>
-          <button
-            onClick={fetchPosts}
-            className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-          >
-            Refresh Posts
-          </button>
-        </div>
+    <AdminPageShell
+      icon={<MessageSquare className="w-6 h-6 text-purple-600" />}
+      title="Community Forum"
+      subtitle={user?.society_name || "Manage society discussion feeds, announcements, and resident posts"}
+      actions={
+        <button
+          onClick={fetchPosts}
+          className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 shadow-xs transition"
+        >
+          Refresh Posts
+        </button>
+      }
+    >
+      <div>
 
         {error && (
           <div className="bg-red-50 text-red-500 p-4 rounded mb-6">{error}</div>
@@ -235,7 +210,7 @@ const CommunityManagement: React.FC = () => {
           </div>
         )}
       </div>
-    </div>
+    </AdminPageShell>
   );
 };
 

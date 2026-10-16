@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import apiClient from "../../../services/api";
 import { useAuth } from "../../../contexts/AuthContext";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -100,11 +101,10 @@ const Notification: React.FC<{
   onClose: () => void;
 }> = ({ msg, type, onClose }) => (
   <div
-    className={`mb-4 p-3 rounded-lg border flex items-center justify-between text-sm ${
-      type === "error"
+    className={`mb-4 p-3 rounded-lg border flex items-center justify-between text-sm ${type === "error"
         ? "bg-red-50 border-red-200 text-red-700"
         : "bg-green-50 border-green-200 text-green-700"
-    }`}
+      }`}
   >
     <div className="flex items-center space-x-2">
       {type === "error" ? (
@@ -933,59 +933,31 @@ const AdminGuardManagement: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-                <Shield className="w-6 h-6 text-blue-600" />
-                <span>Guard Management</span>
-              </h1>
-              <p className="text-sm text-gray-500">{user?.society_name}</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={logout}
-              className="bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 text-sm"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Tabs */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-4">
+    <AdminPageShell
+      icon={<Shield className="w-6 h-6 text-blue-600" />}
+      title="Guard & Security Management"
+      subtitle={user?.society_name || "Manage society guards, shift rosters, and attendance"}
+    >
+      <div>
+        {/* Tabs */}
+        <div className="bg-white border border-gray-200 rounded-xl mb-6 shadow-xs overflow-hidden">
           <div className="flex space-x-0">
             <button
               onClick={() => setActiveTab("guards")}
-              className={`flex items-center space-x-2 px-5 py-3 text-sm font-medium border-b-2 transition ${
-                activeTab === "guards"
+              className={`flex items-center space-x-2 px-5 py-3 text-sm font-medium border-b-2 transition ${activeTab === "guards"
                   ? "border-blue-500 text-blue-600"
                   : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
+                }`}
             >
               <Users className="w-4 h-4" />
               <span>Guards</span>
             </button>
             <button
               onClick={() => setActiveTab("attendance")}
-              className={`flex items-center space-x-2 px-5 py-3 text-sm font-medium border-b-2 transition ${
-                activeTab === "attendance"
+              className={`flex items-center space-x-2 px-5 py-3 text-sm font-medium border-b-2 transition ${activeTab === "attendance"
                   ? "border-blue-500 text-blue-600"
                   : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
+                }`}
             >
               <Clock className="w-4 h-4" />
               <span>Attendance</span>
@@ -995,7 +967,7 @@ const AdminGuardManagement: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="w-full mx-auto px-4 py-6">
         {error && (
           <Notification
             msg={error}
@@ -1016,7 +988,7 @@ const AdminGuardManagement: React.FC = () => {
         )}
         {activeTab === "attendance" && <AttendanceTab setError={setError} />}
       </div>
-    </div>
+    </AdminPageShell>
   );
 };
 

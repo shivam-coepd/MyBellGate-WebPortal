@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../contexts/AuthContext";
 import apiClient from "../../../services/api";
+import AdminPageShell from "../../../components/AdminPageShell";
 
 interface Event {
   id: number;
@@ -190,55 +191,29 @@ const EventManagement: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b mb-6">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate.push("/admin/dashboard")}
-              className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition mr-4"
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
-            </button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-800 flex items-center space-x-2">
-                <span>Event Management</span>
-              </h1>
-              <p className="text-sm text-gray-500">{user?.society_name}</p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={logout}
-              className="bg-red-500 text-white px-3 py-1.5 rounded-lg hover:bg-red-600 text-sm"
-            >
-              Logout
-            </button>
-          </div>
+    <AdminPageShell
+      icon={<Calendar className="w-6 h-6 text-indigo-600" />}
+      title="Event Management"
+      subtitle={user?.society_name || "Organize society festivals, meetings, sports, and cultural events"}
+      actions={
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchEvents}
+            className="bg-white border border-gray-300 text-gray-700 px-3.5 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition shadow-xs"
+          >
+            Refresh
+          </button>
+          <button
+            onClick={() => openModal()}
+            className="flex items-center space-x-1.5 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-xs transition"
+          >
+            <Plus size={16} />
+            <span>New Event</span>
+          </button>
         </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 pb-12">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold text-gray-800">Events</h2>
-          <div className="flex space-x-3">
-            <button
-              onClick={fetchEvents}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded shadow hover:bg-gray-300"
-            >
-              Refresh
-            </button>
-            <button
-              onClick={() => openModal()}
-              className="flex items-center space-x-1 bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600"
-            >
-              <Plus size={18} />
-              <span>New Event</span>
-            </button>
-          </div>
-        </div>
+      }
+    >
+      <div className="pb-12">
 
         {error && (
           <div className="bg-red-50 text-red-500 p-4 rounded mb-6">{error}</div>
@@ -526,7 +501,7 @@ const EventManagement: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 };
 

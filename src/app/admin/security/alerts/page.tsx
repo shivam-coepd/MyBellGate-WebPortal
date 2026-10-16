@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import apiClient from "../../../../services/api";
 import { useAuth } from "../../../../contexts/AuthContext";
+import AdminPageShell from "../../../../components/AdminPageShell";
 
 export interface SecurityAlert {
   id: number | string;
@@ -257,57 +258,31 @@ export default function AdminSecurityAlertsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/70 pb-16">
-      {/* Top Header */}
-      <div className="bg-white border-b sticky top-0 z-20 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => router.push("/admin/dashboard")}
-                className="flex items-center gap-2 text-gray-500 hover:text-gray-900 transition font-medium text-sm"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to Dashboard
-              </button>
-              <div className="h-5 w-px bg-gray-200" />
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-bold">
-                  <ShieldAlert className="w-5 h-5" />
-                </div>
-                <div>
-                  <h1 className="text-lg font-bold text-gray-900 leading-tight">
-                    Security Alerts & Incidents
-                  </h1>
-                  <p className="text-xs text-gray-500">
-                    Real-time community security logs, SOS alerts & emergency monitoring
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                onClick={fetchAlerts}
-                disabled={loading}
-                className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition disabled:opacity-50"
-                title="Refresh Alerts"
-              >
-                <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
-              </button>
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition shadow-sm"
-              >
-                <Plus className="w-4 h-4" />
-                Broadcast Alert
-              </button>
-            </div>
-          </div>
+    <AdminPageShell
+      icon={<ShieldAlert className="w-6 h-6 text-red-600" />}
+      title="Security Alerts & Incidents"
+      subtitle="Real-time community security logs, SOS alerts & emergency monitoring"
+      actions={
+        <div className="flex items-center gap-2">
+          <button
+            onClick={fetchAlerts}
+            disabled={loading}
+            className="p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition disabled:opacity-50"
+            title="Refresh Alerts"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="inline-flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition shadow-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Broadcast Alert
+          </button>
         </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+      }
+    >
+      <div className="pb-16">
         {/* KPI Summary Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="bg-white p-5 rounded-xl border border-gray-200/80 shadow-xs flex items-center justify-between">
@@ -830,6 +805,6 @@ export default function AdminSecurityAlertsPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 }

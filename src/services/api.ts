@@ -1,4 +1,4 @@
-// API Client for MyGate Backend Integration
+// API Client for MyGateBell Backend Integration
 const API_BASE_URL =
   // process.env.NEXT_PUBLIC_API_URL || "https://app.mygatebell.com/backend";
   process.env.NEXT_PUBLIC_API_URL ||
@@ -96,7 +96,21 @@ class ApiClient {
         headers,
       });
 
-      const data = await response.json();
+      const text = await response.text();
+      let data: any = {};
+      if (text && text.trim().length > 0) {
+        try {
+          data = JSON.parse(text);
+        } catch (jsonErr) {
+          console.warn(
+            `Non-JSON response from ${endpoint}:`,
+            text.slice(0, 150),
+          );
+          data = { success: response.ok, message: text };
+        }
+      } else {
+        data = { success: response.ok, message: "" };
+      }
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -187,7 +201,10 @@ class ApiClient {
   }
 
   // Upload
-  async uploadFile(file: File, folder = "amenities"): Promise<ApiResponse<{ url: string; object_key: string }>> {
+  async uploadFile(
+    file: File,
+    folder = "amenities",
+  ): Promise<ApiResponse<{ url: string; object_key: string }>> {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("folder", folder);
@@ -931,7 +948,9 @@ class ApiClient {
     search?: string;
   }) {
     const queryString = new URLSearchParams(params as any).toString();
-    return this.request(`/daily-helpers${queryString ? `?${queryString}` : ""}`);
+    return this.request(
+      `/daily-helpers${queryString ? `?${queryString}` : ""}`,
+    );
   }
 
   async getDailyHelperById(id: string | number) {
@@ -989,7 +1008,9 @@ class ApiClient {
     date?: string;
   }) {
     const queryString = new URLSearchParams(params as any).toString();
-    return this.request(`/daily-helpers/logs${queryString ? `?${queryString}` : ""}`);
+    return this.request(
+      `/daily-helpers/logs${queryString ? `?${queryString}` : ""}`,
+    );
   }
 }
 

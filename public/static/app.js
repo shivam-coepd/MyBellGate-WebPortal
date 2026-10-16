@@ -369,7 +369,7 @@ function updateDemoHint(role) {
     resident: {
       phone: "8976351526",
       pass: "Pass@123",
-      label: "Resident — MyGate Member",
+      label: "Resident — MyGateBell Member",
     },
   };
   const h = hints[role];
@@ -487,16 +487,16 @@ function renderApp() {
         <div class="sidebar-section">
           <div class="sidebar-section-label">Main Menu</div>
           ${navItems
-            .map(
-              (item) => `
+      .map(
+        (item) => `
             <div class="nav-item ${item.id === State.currentPage ? "active" : ""}" 
                  data-page="${item.id}" onclick="navigateTo('${item.id}')">
               <i class="fa-solid ${item.icon} nav-icon"></i>
               <span>${item.label}</span>
               ${item.badge ? `<span class="nav-badge" id="badge-${item.id}">${item.badge}</span>` : ""}
             </div>`,
-            )
-            .join("")}
+      )
+      .join("")}
         </div>
         <div class="sidebar-footer">
           <div class="user-card" onclick="doLogout()">
@@ -771,12 +771,11 @@ function renderAdminDashboard(stats, activity) {
           <button class="btn btn-ghost btn-sm" onclick="navigateTo('visitors')">View All</button>
         </div>
         <div class="card-body" style="padding:0">
-          ${
-            activity.recentVisitors.length === 0
-              ? emptyState("fa-users", "No recent visitors")
-              : activity.recentVisitors
-                  .map(
-                    (v) => `
+          ${activity.recentVisitors.length === 0
+      ? emptyState("fa-users", "No recent visitors")
+      : activity.recentVisitors
+        .map(
+          (v) => `
               <div class="flex items-center gap-3" style="padding:12px 20px;border-bottom:1px solid var(--gray-100)">
                 <div class="user-avatar" style="width:36px;height:36px;font-size:13px;flex-shrink:0">${initials(v.name)}</div>
                 <div style="flex:1;min-width:0">
@@ -788,9 +787,9 @@ function renderAdminDashboard(stats, activity) {
                   <div class="text-xs text-muted mt-1">${timeAgo(v.createdAt)}</div>
                 </div>
               </div>`,
-                  )
-                  .join("")
-          }
+        )
+        .join("")
+    }
         </div>
       </div>
       <div class="card">
@@ -800,8 +799,8 @@ function renderAdminDashboard(stats, activity) {
         </div>
         <div class="card-body" style="padding:0">
           ${activity.recentComplaints
-            .map(
-              (c) => `
+      .map(
+        (c) => `
             <div class="flex items-center gap-3" style="padding:12px 20px;border-bottom:1px solid var(--gray-100)">
               <div class="cat-icon cat-${c.category}"><i class="fa-solid ${categoryIcon(c.category)}"></i></div>
               <div style="flex:1;min-width:0">
@@ -813,8 +812,8 @@ function renderAdminDashboard(stats, activity) {
                 <div class="text-xs text-muted mt-1">${timeAgo(c.createdAt)}</div>
               </div>
             </div>`,
-            )
-            .join("")}
+      )
+      .join("")}
         </div>
       </div>
     </div>
@@ -826,8 +825,8 @@ function renderAdminDashboard(stats, activity) {
       </div>
       <div class="card-body" style="padding:0">
         ${activity.recentNotices
-          .map(
-            (n) => `
+      .map(
+        (n) => `
           <div class="flex items-center gap-3" style="padding:14px 22px;border-bottom:1px solid var(--gray-100)">
             <div class="cat-icon" style="background:${n.priority === "urgent" ? "var(--red-100)" : n.priority === "important" ? "var(--orange-100)" : "var(--primary-100)"};color:${n.priority === "urgent" ? "var(--red-600)" : n.priority === "important" ? "var(--orange-600)" : "var(--primary-600)"}">
               <i class="fa-solid fa-bullhorn"></i>
@@ -838,8 +837,8 @@ function renderAdminDashboard(stats, activity) {
             </div>
             <span class="badge badge-${n.priority}">${n.priority}</span>
           </div>`,
-          )
-          .join("")}
+      )
+      .join("")}
       </div>
     </div>`;
 
@@ -976,8 +975,8 @@ function renderGuardDashboard(stats, activity) {
       </div>
       <div class="card-body" style="padding:0">
         ${activity.recentVisitors
-          .map(
-            (v) => `
+      .map(
+        (v) => `
           <div class="flex items-center gap-3" style="padding:14px 22px;border-bottom:1px solid var(--gray-100)">
             <div class="user-avatar" style="width:38px;height:38px;font-size:14px;flex-shrink:0">${initials(v.name)}</div>
             <div style="flex:1;min-width:0">
@@ -989,8 +988,8 @@ function renderGuardDashboard(stats, activity) {
               <div class="text-xs text-muted mt-1">${v.entryTime ? formatTime(v.entryTime) : timeAgo(v.createdAt)}</div>
             </div>
           </div>`,
-          )
-          .join("")}
+      )
+      .join("")}
       </div>
     </div>`;
 }
@@ -1018,9 +1017,9 @@ function renderResidentDashboard(stats, activity) {
         </div>
         <div class="card-body" style="padding:0">
           ${activity.recentVisitors
-            .slice(0, 4)
-            .map(
-              (v) => `
+      .slice(0, 4)
+      .map(
+        (v) => `
             <div class="flex items-center gap-3" style="padding:12px 20px;border-bottom:1px solid var(--gray-100)">
               <div class="user-avatar" style="width:34px;height:34px;font-size:12px;flex-shrink:0">${initials(v.name)}</div>
               <div style="flex:1;min-width:0">
@@ -1029,8 +1028,8 @@ function renderResidentDashboard(stats, activity) {
               </div>
               ${statusBadge(v.status)}
             </div>`,
-            )
-            .join("")}
+      )
+      .join("")}
           ${activity.recentVisitors.length === 0 ? '<div class="empty-state" style="padding:30px"><div class="empty-state-icon" style="font-size:36px">🚶</div><p class="text-muted text-sm">No visitors logged today</p></div>' : ""}
         </div>
       </div>
@@ -1041,8 +1040,8 @@ function renderResidentDashboard(stats, activity) {
         </div>
         <div class="card-body" style="padding:0">
           ${activity.recentNotices
-            .map(
-              (n) => `
+      .map(
+        (n) => `
             <div style="padding:14px 20px;border-bottom:1px solid var(--gray-100);cursor:pointer" onclick="navigateTo('notices')">
               <div class="flex items-center gap-2 mb-1">
                 <span class="badge badge-${n.priority}">${n.priority}</span>
@@ -1051,8 +1050,8 @@ function renderResidentDashboard(stats, activity) {
               <div class="font-semibold" style="font-size:14px">${n.title}</div>
               <div class="text-muted text-xs mt-1">${n.content.substring(0, 80)}...</div>
             </div>`,
-            )
-            .join("")}
+      )
+      .join("")}
         </div>
       </div>
     </div>`;
@@ -1155,13 +1154,12 @@ function renderVisitorRows(visitors) {
       <td>${statusBadge(v.status)}</td>
       <td>
         <div class="flex gap-2">
-          ${
-            v.status === "pending"
-              ? `
+          ${v.status === "pending"
+          ? `
             <button class="btn btn-success btn-sm" onclick="approveVisitor('${v.id}')"><i class="fa-solid fa-check"></i></button>
             <button class="btn btn-danger btn-sm" onclick="rejectVisitor('${v.id}')"><i class="fa-solid fa-times"></i></button>`
-              : ""
-          }
+          : ""
+        }
           ${v.status === "approved" ? `<button class="btn btn-ghost btn-sm" onclick="exitVisitor('${v.id}')"><i class="fa-solid fa-door-open"></i> Exit</button>` : ""}
           <button class="btn btn-ghost btn-icon" onclick="deleteVisitor('${v.id}')" title="Delete"><i class="fa-solid fa-trash" style="color:var(--red-500)"></i></button>
         </div>
@@ -1197,12 +1195,12 @@ function getVisitorModal(flats) {
                 <select class="form-input" id="v-flat" required>
                   <option value="">Select flat</option>
                   ${flats
-                    .filter((f) => f.status === "occupied")
-                    .map(
-                      (f) =>
-                        `<option value="${f.id}">${f.flatNo} — ${f.owner ? f.owner.name : "Resident"}</option>`,
-                    )
-                    .join("")}
+      .filter((f) => f.status === "occupied")
+      .map(
+        (f) =>
+          `<option value="${f.id}">${f.flatNo} — ${f.owner ? f.owner.name : "Resident"}</option>`,
+      )
+      .join("")}
                 </select>
               </div>
               <div class="form-group">
@@ -1683,7 +1681,7 @@ function openFlatDetailsModal(id) {
   const flat = State.data.flats.find((f) => f.id === id);
   if (!flat) return;
   const content = el("flat-details-content");
-  
+
   let html = `
     <div style="margin-bottom:20px;">
       <h3 style="margin-bottom:8px;font-size:16px;">Flat Info</h3>
@@ -1720,7 +1718,7 @@ function openFlatDetailsModal(id) {
   } else {
     html += `<div style="padding:15px;background:var(--gray-50);border-radius:8px;"><p style="color:var(--gray-500)">No tenant assigned</p></div>`;
   }
-  
+
   content.innerHTML = html;
   Modal.open("flat-details-modal");
 }
@@ -1861,11 +1859,11 @@ async function submitFlat() {
   const type = el("fl-type").value;
 
   // Owner fields
-  const ownerName    = el("fl-owner-name").value.trim();
-  const ownerPhone   = el("fl-owner-phone").value.trim();
-  const ownerEmail   = el("fl-owner-email").value.trim();
+  const ownerName = el("fl-owner-name").value.trim();
+  const ownerPhone = el("fl-owner-phone").value.trim();
+  const ownerEmail = el("fl-owner-email").value.trim();
   const ownerPassword = el("fl-owner-password").value.trim();
-  const userRole     = el("fl-user-role").value;
+  const userRole = el("fl-user-role").value;
   const occupancyStatus = el("fl-occupancy-status").value;
 
   const hasOwnerDetails = ownerName && ownerPhone && ownerEmail;
@@ -1881,14 +1879,14 @@ async function submitFlat() {
 
   try {
     let newFlat;
-    const body = { 
-        flatNo, block, floor: parseInt(floor), area, type, userRole, occupancyStatus
+    const body = {
+      flatNo, block, floor: parseInt(floor), area, type, userRole, occupancyStatus
     };
     if (hasOwnerDetails) {
-        body.ownerName = ownerName;
-        body.ownerPhone = ownerPhone;
-        body.ownerEmail = ownerEmail;
-        body.ownerPassword = ownerPassword;
+      body.ownerName = ownerName;
+      body.ownerPhone = ownerPhone;
+      body.ownerEmail = ownerEmail;
+      body.ownerPassword = ownerPassword;
     }
 
     if (id) {
@@ -1903,7 +1901,7 @@ async function submitFlat() {
           delete body.ownerPassword;
         }
       }
-      
+
       const res = await API.put(`/residents/flats/${id}`, body);
       newFlat = res;
       Toast.success("Updated", "Flat updated");
@@ -1912,7 +1910,7 @@ async function submitFlat() {
       newFlat = await API.post("/residents/flats", body);
       Toast.success("Added", `Flat ${flatNo} created`);
       if (hasOwnerDetails) {
-          Toast.success("Resident Linked", `${ownerName} assigned to flat ${flatNo}`);
+        Toast.success("Resident Linked", `${ownerName} assigned to flat ${flatNo}`);
       }
     }
 
@@ -2072,7 +2070,7 @@ async function closePoll(id) {
       await API.put(`/communications/polls/${id}`, { is_active: false });
       Toast.success("Poll Closed", "The poll has been closed successfully.");
       renderPolls();
-    } catch(err) {
+    } catch (err) {
       showError(err.message || "Failed to close poll");
     }
   });
@@ -2084,7 +2082,7 @@ async function deletePoll(id) {
       await API.delete(`/communications/polls/${id}`);
       Toast.success("Poll Deleted", "The poll has been deleted successfully.");
       renderPolls();
-    } catch(err) {
+    } catch (err) {
       showError(err.message || "Failed to delete poll");
     }
   });
@@ -2096,9 +2094,9 @@ async function renderComplaints() {
     const [complaints, staff] = await Promise.all([
       API.get(
         "/complaints" +
-          (State.user.role === "resident"
-            ? `?residentId=${State.user.id}`
-            : ""),
+        (State.user.role === "resident"
+          ? `?residentId=${State.user.id}`
+          : ""),
       ),
       State.user.role === "admin"
         ? API.get("/staff")
@@ -2113,11 +2111,10 @@ async function renderComplaints() {
           <h1 class="page-title">Complaint Helpdesk</h1>
           <p class="page-subtitle">${complaints.length} total complaints tracked</p>
         </div>
-        ${
-          State.user.role === "resident"
-            ? `<button class="btn btn-primary btn-sm" onclick="openComplaintModal()"><i class="fa-solid fa-plus"></i> Raise Complaint</button>`
-            : ""
-        }
+        ${State.user.role === "resident"
+        ? `<button class="btn btn-primary btn-sm" onclick="openComplaintModal()"><i class="fa-solid fa-plus"></i> Raise Complaint</button>`
+        : ""
+      }
       </div>
 
       <div class="card" style="margin-bottom:20px">
@@ -2202,13 +2199,12 @@ function renderComplaintCards(complaints) {
         </div>
         <div class="flex gap-2">
           <button class="btn btn-ghost btn-sm" onclick="openComplaintDetail('${c.id}')"><i class="fa-solid fa-eye"></i> View</button>
-          ${
-            State.user.role === "admin"
-              ? `
+          ${State.user.role === "admin"
+          ? `
             <button class="btn btn-outline-primary btn-sm" onclick="updateComplaintStatus('${c.id}', 'in_progress')">In Progress</button>
             <button class="btn btn-success btn-sm" onclick="updateComplaintStatus('${c.id}', 'resolved')"><i class="fa-solid fa-check"></i> Resolve</button>`
-              : ""
-          }
+          : ""
+        }
           <button class="btn btn-ghost btn-icon btn-sm" onclick="deleteComplaint('${c.id}')" title="Delete"><i class="fa-solid fa-trash" style="color:var(--red-400)"></i></button>
         </div>
       </div>
@@ -2301,9 +2297,8 @@ async function openComplaintDetail(id) {
       <div class="info-label mb-2">Description</div>
       <p style="font-size:14px;color:var(--gray-700);line-height:1.7">${c.description}</p>
     </div>
-    ${
-      State.user.role === "admin"
-        ? `
+    ${State.user.role === "admin"
+      ? `
       <div style="background:var(--primary-50);border:1px solid var(--primary-100);border-radius:var(--radius-md);padding:14px;margin-bottom:20px">
         <div class="info-label mb-2" style="color:var(--primary-700)">Update Status</div>
         <div class="flex gap-2 flex-wrap">
@@ -2314,26 +2309,25 @@ async function openComplaintDetail(id) {
           <select class="form-input" id="cd-assign">
             <option value="">Select team member...</option>
             ${(State.data.staff || [])
-              .map(
-                (s) =>
-                  `<option value="${s.id}" ${c.assignedToId === s.id ? "selected" : ""}>${s.name} (${s.role})</option>`,
-              )
-              .join("")}
+        .map(
+          (s) =>
+            `<option value="${s.id}" ${c.assignedToId === s.id ? "selected" : ""}>${s.name} (${s.role})</option>`,
+        )
+        .join("")}
           </select>
           <button class="btn btn-primary btn-sm mt-2" onclick="assignComplaint('${c.id}')"><i class="fa-solid fa-user-check"></i> Assign</button>
         </div>
       </div>`
-        : ""
+      : ""
     }
     <div class="divider"></div>
     <div class="info-label mb-3">Comments & Updates (${c.comments.length})</div>
     <div class="comment-thread" id="comment-thread-${c.id}">
-      ${
-        c.comments.length === 0
-          ? '<p class="text-muted text-sm">No comments yet.</p>'
-          : c.comments
-              .map(
-                (cm) => `
+      ${c.comments.length === 0
+      ? '<p class="text-muted text-sm">No comments yet.</p>'
+      : c.comments
+        .map(
+          (cm) => `
           <div class="comment-item">
             <div class="comment-avatar">${initials(cm.authorName)}</div>
             <div class="comment-bubble ${cm.role === "admin" ? "admin" : ""}">
@@ -2345,9 +2339,9 @@ async function openComplaintDetail(id) {
               <div class="comment-text">${cm.text}</div>
             </div>
           </div>`,
-              )
-              .join("")
-      }
+        )
+        .join("")
+    }
     </div>
     <div style="display:flex;gap:10px;margin-top:16px">
       <input type="text" class="form-input" id="new-comment" placeholder="Add a comment or update..." style="flex:1">
@@ -2528,11 +2522,10 @@ function renderNoticeCards(notices) {
         <span><i class="fa-solid fa-user"></i> ${n.authorName}</span>
         <span><i class="fa-solid fa-calendar"></i> ${formatDate(n.createdAt)}</span>
         <span><i class="fa-solid fa-check-double"></i> ${n.acknowledgedBy.length} acknowledged</span>
-        ${
-          State.user.role === "admin"
-            ? `
+        ${State.user.role === "admin"
+          ? `
           <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();deleteNotice('${n.id}')" style="margin-left:auto;color:var(--red-500)"><i class="fa-solid fa-trash"></i></button>`
-            : ""
+          : ""
         }
       </div>
     </div>`,
@@ -2613,14 +2606,13 @@ function openNoticeDetail(id) {
         <div class="text-xs text-muted">acknowledged</div>
       </div>
     </div>
-    ${
-      State.user.role === "resident" &&
+    ${State.user.role === "resident" &&
       !n.acknowledgedBy.includes(State.user.id)
-        ? `
+      ? `
       <button class="btn btn-success w-full mt-3" onclick="acknowledgeNotice('${n.id}')"><i class="fa-solid fa-check"></i> Mark as Read & Acknowledge</button>`
-        : State.user.role === "resident"
-          ? `<div class="text-center text-sm" style="color:var(--green-600);padding:12px"><i class="fa-solid fa-check-circle"></i> You have acknowledged this notice</div>`
-          : ""
+      : State.user.role === "resident"
+        ? `<div class="text-center text-sm" style="color:var(--green-600);padding:12px"><i class="fa-solid fa-check-circle"></i> You have acknowledged this notice</div>`
+        : ""
     }`;
   Modal.open("notice-detail-modal");
 }
@@ -2733,14 +2725,14 @@ async function renderBilling() {
             <select class="form-input" style="width:auto" id="bill-month-filter" onchange="filterBills()">
               <option value="">All Months</option>
               ${billMonths
-                .map((m) => {
-                  const label = new Date(m + "-01").toLocaleDateString("en-IN", {
-                    month: "long",
-                    year: "numeric",
-                  });
-                  return `<option value="${m}">${label}</option>`;
-                })
-                .join("")}
+        .map((m) => {
+          const label = new Date(m + "-01").toLocaleDateString("en-IN", {
+            month: "long",
+            year: "numeric",
+          });
+          return `<option value="${m}">${label}</option>`;
+        })
+        .join("")}
             </select>
           </div>
         </div>
@@ -2760,7 +2752,7 @@ async function renderBilling() {
   }
 }
 
-function renderBillCards(bills) {  
+function renderBillCards(bills) {
   if (bills.length === 0)
     return emptyState(
       "fa-file-invoice",
@@ -2943,7 +2935,7 @@ async function renderCommunity() {
     const response = await API.get("/community/posts?limit=100");
     const posts = Array.isArray(response) ? response : (response.data || []);
     State.data.community = posts;
-    
+
     const pc = el("page-content");
     pc.innerHTML = `
       <div class="page-header">
@@ -3013,14 +3005,14 @@ function renderCommunityCards(posts) {
   if (!posts || posts.length === 0) {
     return `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-500)">No community posts found.</td></tr>`;
   }
-  
+
   return posts.map(post => {
     const authorName = post.user_name || 'Unknown User';
     const avatar = post.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&background=random`;
     const unit = post.unit || 'No unit';
     const hasImage = post.image ? '<span style="color:var(--blue-500)"><i class="fa-solid fa-image"></i> Image</span>' : '<span class="text-muted">Text only</span>';
     const date = post.created_at ? new Date(post.created_at).toLocaleDateString() : 'Unknown';
-    
+
     return `
       <tr>
         <td>
@@ -3068,13 +3060,13 @@ async function deleteCommunityPost(id) {
 async function createCommunityPost() {
   const content = el("cp-content").value.trim();
   const image = el("cp-image").value.trim();
-  
+
   if (!content) return Toast.error("Error", "Post content is required");
-  
+
   try {
     const payload = { content };
     if (image) payload.image = image;
-    
+
     await API.post("/community/posts", payload);
     Toast.success("Success", "Post created successfully");
     Modal.close("create-community-modal");
@@ -3094,9 +3086,9 @@ async function renderEvents() {
     else if (response.events && Array.isArray(response.events)) events = response.events;
     else if (response.data && Array.isArray(response.data.events)) events = response.data.events;
     else if (response.data && Array.isArray(response.data)) events = response.data;
-    
+
     State.data.events = events;
-    
+
     const pc = el("page-content");
     pc.innerHTML = `
       <div class="page-header">
@@ -3259,11 +3251,11 @@ function renderEventCards(events) {
   if (!events || events.length === 0) {
     return `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-500)">No events found.</td></tr>`;
   }
-  
+
   return events.map(ev => {
     const date = ev.event_date ? new Date(ev.event_date).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : 'Unknown';
     const attendees = Array.isArray(ev.attendees) ? ev.attendees.length : (ev.attendees || ev.attendees_count || 0);
-    
+
     return `
       <tr>
         <td class="font-semibold">${ev.title}</td>
@@ -3304,31 +3296,31 @@ async function deleteEvent(id) {
 async function handleEventImageUpload(input) {
   const file = input.files[0];
   if (!file) return;
-  
+
   const btn = document.getElementById("ev-upload-btn");
   const urlInput = document.getElementById("ev-image");
   const originalHtml = btn.innerHTML;
-  
+
   try {
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     btn.disabled = true;
-    
+
     const formData = new FormData();
     formData.append("file", file);
     formData.append("folder", "events");
-    
+
     const headers = {};
     if (State.token) {
       headers["Authorization"] = `Bearer ${State.token}`;
     }
-    
+
     // We use raw fetch here because API.request hardcodes Content-Type: application/json
     const response = await fetch(`${API.base}/upload/file`, {
       method: "POST",
       headers: headers,
       body: formData
     });
-    
+
     const result = await response.json();
     if (result.status && result.data && result.data.url) {
       urlInput.value = result.data.url;
@@ -3352,16 +3344,16 @@ async function submitSocietyEvent() {
   const date = el("ev-date").value;
   const location = el("ev-location").value.trim();
   const image = el("ev-image").value.trim();
-  
+
   const category = el("ev-category").value.trim();
   const organizer = el("ev-organizer").value.trim();
   const price = el("ev-price").value.trim();
   const tags = el("ev-tags").value.trim();
-  
+
   if (!title || !description || !date || !location) {
     return Toast.error("Error", "All fields are required");
   }
-  
+
   try {
     const dateParts = date.split('T');
     const payload = {
@@ -3375,9 +3367,9 @@ async function submitSocietyEvent() {
       price: price || 'Free',
       tags: tags || null
     };
-    
+
     if (image) payload.cover_image = image;
-    
+
     await API.post("/events", payload);
     Toast.success("Success", "Event created successfully");
     Modal.close("create-event-modal");
@@ -3390,11 +3382,11 @@ async function submitSocietyEvent() {
 function openEditEventModal(id) {
   const event = State.data.events.find(e => e.id === id);
   if (!event) return;
-  
+
   el("edit-ev-id").value = event.id;
   el("edit-ev-title").value = event.title || '';
   el("edit-ev-category").value = event.category || '';
-  
+
   if (event.event_date) {
     // format to YYYY-MM-DDTHH:mm
     let dt = event.event_date;
@@ -3407,14 +3399,14 @@ function openEditEventModal(id) {
   } else {
     el("edit-ev-date").value = '';
   }
-  
+
   el("edit-ev-location").value = event.location || '';
   el("edit-ev-organizer").value = event.organizer || '';
   el("edit-ev-price").value = event.price || '';
   el("edit-ev-tags").value = event.tags || '';
   el("edit-ev-image").value = event.cover_image || '';
   el("edit-ev-description").value = event.description || '';
-  
+
   Modal.open("edit-event-modal");
 }
 
@@ -3425,17 +3417,17 @@ async function updateSocietyEvent() {
   const date = el("edit-ev-date").value;
   const location = el("edit-ev-location").value.trim();
   const image = el("edit-ev-image").value.trim();
-  
+
   const category = el("edit-ev-category").value.trim();
   const organizer = el("edit-ev-organizer").value.trim();
   const price = el("edit-ev-price").value.trim();
   const tags = el("edit-ev-tags").value.trim();
-  
+
   if (!title || !description || !date) {
     Toast.error("Validation Error", "Title, description and date are required");
     return;
   }
-  
+
   try {
     const dateParts = date.split('T');
     const payload = {
@@ -3449,9 +3441,9 @@ async function updateSocietyEvent() {
       price: price || 'Free',
       tags: tags || null
     };
-    
+
     if (image) payload.cover_image = image;
-    
+
     await API.put(`/events/${id}`, payload);
     Toast.success("Success", "Event updated successfully");
     Modal.close("edit-event-modal");
@@ -3464,17 +3456,17 @@ async function updateSocietyEvent() {
 async function handleEventImageUploadEdit(input) {
   const file = input.files[0];
   if (!file) return;
-  
+
   const btn = document.getElementById("edit-ev-upload-btn");
   const urlInput = document.getElementById("edit-ev-image");
   const originalHtml = btn.innerHTML;
-  
+
   try {
     btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
     const fd = new FormData();
     fd.append("file", file);
     fd.append("folder", "events");
-    
+
     const token = State.token || localStorage.getItem('token');
     const response = await fetch(`${API.base}/upload/file`, {
       method: "POST",
@@ -3483,7 +3475,7 @@ async function handleEventImageUploadEdit(input) {
       },
       body: fd
     });
-    
+
     const result = await response.json();
     if (result.status && result.data?.url) {
       urlInput.value = result.data.url;
@@ -3566,9 +3558,9 @@ async function renderSecurity() {
                   <select class="form-input" id="sg-flat">
                     <option value="">Select flat...</option>
                     ${flats
-                      .filter((f) => f.status === "occupied")
-                      .map((f) => `<option value="${f.id}">${f.flatNo} — ${f.owner ? f.owner.name : "Resident"}</option>`)
-                      .join("")}
+        .filter((f) => f.status === "occupied")
+        .map((f) => `<option value="${f.id}">${f.flatNo} — ${f.owner ? f.owner.name : "Resident"}</option>`)
+        .join("")}
                   </select>
                 </div>
                 <div class="form-group">
@@ -3593,9 +3585,8 @@ async function renderSecurity() {
           </div>
 
           <div>
-            ${
-              pending.length > 0
-                ? `
+            ${pending.length > 0
+        ? `
               <div class="card" style="margin-bottom:16px;border:2px solid var(--orange-300)">
                 <div class="card-header" style="background:var(--orange-50)">
                   <span class="card-title" style="color:var(--orange-700)"><i class="fa-solid fa-clock-rotate-left"></i> Awaiting Approval (${pending.length})</span>
@@ -3604,8 +3595,8 @@ async function renderSecurity() {
                   ${pending.map((v) => renderSecurityVisitorCard(v, true)).join("")}
                 </div>
               </div>`
-                : ""
-            }
+        : ""
+      }
 
             <div class="card">
               <div class="card-header">
@@ -3614,11 +3605,10 @@ async function renderSecurity() {
               </div>
               <div class="card-body" style="padding:12px">
                 <div class="visitor-live-list">
-                  ${
-                    approved.length === 0
-                      ? '<div class="empty-state" style="padding:30px"><div class="empty-state-icon" style="font-size:36px">👮</div><p class="text-muted text-sm">No visitors logged today</p></div>'
-                      : approved.map((v) => renderSecurityVisitorCard(v, false)).join("")
-                  }
+                  ${approved.length === 0
+        ? '<div class="empty-state" style="padding:30px"><div class="empty-state-icon" style="font-size:36px">👮</div><p class="text-muted text-sm">No visitors logged today</p></div>'
+        : approved.map((v) => renderSecurityVisitorCard(v, false)).join("")
+      }
                 </div>
               </div>
             </div>
@@ -3770,22 +3760,21 @@ function renderSecurityVisitorCard(v, isPending) {
         ${v.entryTime ? `<div class="visitor-meta-item"><i class="fa-solid fa-clock"></i> In: ${formatTime(v.entryTime)}</div>` : ""}
         ${v.exitTime ? `<div class="visitor-meta-item"><i class="fa-solid fa-door-open"></i> Out: ${formatTime(v.exitTime)}</div>` : ""}
       </div>
-      ${
-        isPending
-          ? `
+      ${isPending
+      ? `
         <div class="visitor-actions">
           <button class="btn btn-success flex-1" onclick="approveVisitorSec('${v.id}')"><i class="fa-solid fa-check"></i> Approve</button>
           <button class="btn btn-danger flex-1" onclick="rejectVisitorSec('${v.id}')"><i class="fa-solid fa-times"></i> Reject</button>
         </div>`
-          : v.status === "approved" || v.status === "entered"
-            ? `
+      : v.status === "approved" || v.status === "entered"
+        ? `
         <div class="visitor-actions">
           <button class="btn btn-ghost flex-1" onclick="exitVisitorSec('${v.id}')"><i class="fa-solid fa-door-open"></i> Log Exit</button>
         </div>`
-            : ""
-      }
+        : ""
+    }
     </div>`;
-  }
+}
 
 async function logVisitorSecurity(isDirect) {
   const name = el("sg-name").value.trim();
@@ -3884,12 +3873,12 @@ async function submitSecurityAlert() {
   const severity = el("ra-severity").value;
   const location = el("ra-location").value.trim();
   const description = el("ra-description").value.trim();
-  
+
   if (!description) {
     Toast.error("Validation", "Description is required");
     return;
   }
-  
+
   try {
     await API.post("/security/alerts", { alertType, severity, location, description });
     Toast.success("Alert Reported", "Security team has been notified");
@@ -3934,12 +3923,12 @@ async function submitEmergencyContact() {
   const contactType = el("ec-type").value;
   const phone = el("ec-phone").value.trim();
   const email = el("ec-email").value.trim();
-  
+
   if (!name || !phone) {
     Toast.error("Validation", "Name and phone are required");
     return;
   }
-  
+
   try {
     await API.post("/security/emergency-contacts", { name, contactType, phone, email });
     Toast.success("Contact Added", "Emergency contact saved");
@@ -4026,7 +4015,7 @@ function renderAmenityCard(a) {
       ${a.imageUrl ? `<div style="height:140px;background:url('${a.imageUrl}') center/cover;border-radius:var(--radius-lg) var(--radius-lg) 0 0"></div>` : `<div style="height:140px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;color:var(--gray-400);font-size:32px;border-radius:var(--radius-lg) var(--radius-lg) 0 0"><i class="fa-solid fa-image"></i></div>`}
       <div style="padding:16px;flex:1;display:flex;flex-direction:column">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
-          <h3 style="margin:0;font-size:16px;font-weight:600;padding-right:${State.user.role==='admin'?'0':'0'}">${a.name}</h3>
+          <h3 style="margin:0;font-size:16px;font-weight:600;padding-right:${State.user.role === 'admin' ? '0' : '0'}">${a.name}</h3>
           <span class="badge badge-${a.isActive ? 'approved' : 'suspended'}">${a.isActive ? 'Active' : 'Inactive'}</span>
         </div>
         <p style="font-size:13px;color:var(--gray-500);margin:0 0 16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${a.description || "No description provided."}</p>
@@ -4171,7 +4160,7 @@ function getEditAmenityModal() {
 function openEditAmenityModal(id) {
   const amenity = State.data.amenities.find(a => a.id === id);
   if (!amenity) return;
-  
+
   el("edit-am-id").value = amenity.id;
   el("edit-am-name").value = amenity.name;
   el("edit-am-cap").value = amenity.capacity;
@@ -4179,7 +4168,7 @@ function openEditAmenityModal(id) {
   el("edit-am-img").value = amenity.imageUrl || "";
   el("edit-am-desc").value = amenity.description || "";
   el("edit-am-active").checked = amenity.isActive;
-  
+
   Modal.open('edit-amenity-modal');
 }
 
@@ -4209,7 +4198,7 @@ async function submitEditAmenity() {
 
 async function deleteAmenity(id) {
   if (!confirm("Are you sure you want to delete this amenity? This action cannot be undone.")) return;
-  
+
   try {
     await API.delete(`/amenities/${id}`);
     Toast.success("Deleted", "Amenity deleted successfully");
@@ -4978,7 +4967,7 @@ function saViewReg(id) {
 
   const isApproved = reg.status === "approved";
   const isRejected = reg.status === "rejected";
-  const canAct     = !isApproved && !isRejected;
+  const canAct = !isApproved && !isRejected;
 
   const overlay = document.createElement("div");
   overlay.className = "modal-overlay open";
@@ -5022,20 +5011,20 @@ function saViewReg(id) {
   document.body.appendChild(overlay);
   overlay.addEventListener("click", (e) => { if (e.target === overlay) Modal.close("reg-view-modal"); });
 
-  const reviewBtn      = document.getElementById("rv-review-btn");
-  const approveBtn     = document.getElementById("rv-approve-btn");
-  const prefillBtn     = document.getElementById("rv-prefill-btn");
-  const rejectBtn      = document.getElementById("rv-reject-btn");
+  const reviewBtn = document.getElementById("rv-review-btn");
+  const approveBtn = document.getElementById("rv-approve-btn");
+  const prefillBtn = document.getElementById("rv-prefill-btn");
+  const rejectBtn = document.getElementById("rv-reject-btn");
   const viewSocietyBtn = document.getElementById("rv-view-society-btn");
 
-  if (reviewBtn)      reviewBtn.onclick      = async () => { Modal.close("reg-view-modal"); await saUpdateReg(reg.id, "under_review"); };
-  if (approveBtn)     approveBtn.onclick     = () => { Modal.close("reg-view-modal"); saOpenApproveRegistrationModal(reg.id); };
-  if (prefillBtn)     prefillBtn.onclick     = () => { 
-    Modal.close("reg-view-modal"); 
-    State.saAddSocietyPrefill = { ...reg, registrationId: reg.id }; 
-    saNavigate("sa-add-society"); 
+  if (reviewBtn) reviewBtn.onclick = async () => { Modal.close("reg-view-modal"); await saUpdateReg(reg.id, "under_review"); };
+  if (approveBtn) approveBtn.onclick = () => { Modal.close("reg-view-modal"); saOpenApproveRegistrationModal(reg.id); };
+  if (prefillBtn) prefillBtn.onclick = () => {
+    Modal.close("reg-view-modal");
+    State.saAddSocietyPrefill = { ...reg, registrationId: reg.id };
+    saNavigate("sa-add-society");
   };
-  if (rejectBtn)      rejectBtn.onclick      = async () => { Modal.close("reg-view-modal"); await saUpdateReg(reg.id, "rejected"); };
+  if (rejectBtn) rejectBtn.onclick = async () => { Modal.close("reg-view-modal"); await saUpdateReg(reg.id, "rejected"); };
   if (viewSocietyBtn) viewSocietyBtn.onclick = () => { Modal.close("reg-view-modal"); saNavigate("sa-societies"); };
 }
 
@@ -5056,8 +5045,8 @@ async function renderSASocieties() {
             </tr></thead>
             <tbody>
               ${societies
-                .map(
-                  (s) => `
+        .map(
+          (s) => `
                 <tr>
                   <td>
                     <div class="society-name">${s.name}</div>
@@ -5080,8 +5069,8 @@ async function renderSASocieties() {
                     </div>
                   </td>
                 </tr>`,
-                )
-                .join("")}
+        )
+        .join("")}
             </tbody>
           </table>
         </div>
@@ -5125,18 +5114,17 @@ async function saViewSociety(id) {
             ${s.gst ? `<div class="society-detail-item"><label>GST</label><span>${s.gst}</span></div>` : ""}
             ${s.pan ? `<div class="society-detail-item"><label>PAN</label><span>${s.pan}</span></div>` : ""}
           </div>
-          ${
-            s.admin
-              ? `
+          ${s.admin
+        ? `
             <div style="margin-top:16px;padding:14px 16px;background:var(--green-50);border:1px solid var(--green-200);border-radius:var(--radius-md)">
               <div style="font-size:12px;font-weight:700;color:var(--green-700);margin-bottom:6px"><i class="fa-solid fa-user-shield"></i> Society Admin Assigned</div>
               <div style="font-size:13px;color:var(--gray-700)">${s.admin.name} · ${s.admin.email} · ${s.admin.phone}</div>
             </div>`
-              : `
+        : `
             <div style="margin-top:16px;padding:14px 16px;background:var(--orange-50);border:1px solid var(--orange-200);border-radius:var(--radius-md)">
               <div style="font-size:13px;color:var(--orange-700)"><i class="fa-solid fa-circle-exclamation"></i> No admin assigned yet.</div>
             </div>`
-          }
+      }
         </div>
         <div class="modal-footer">
           ${s.status !== "approved" ? `<button class="btn btn-success" id="society-approve-btn"><i class="fa-solid fa-check"></i> Approve</button>` : ""}
@@ -5494,11 +5482,11 @@ async function saCreateAdminSubmit(socId) {
 async function saEditSocietyAdmin(socId) {
   try {
     const s = await API.get(`/superadmin/societies/${socId}`);
-    
+
     // Remove any existing overlay first to prevent stacking
     const existing = document.getElementById("edit-admin-modal");
     if (existing) existing.remove();
-    
+
     const overlay = document.createElement("div");
     overlay.className = "modal-overlay";
     overlay.id = "edit-admin-modal";
@@ -5550,7 +5538,7 @@ async function saEditSocietyAdmin(socId) {
     // Wire up close buttons
     document.getElementById("ea-close-icon").onclick = closeEditAdminModal;
     document.getElementById("ea-cancel-btn").onclick = closeEditAdminModal;
-    
+
     // Backdrop click to close
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) closeEditAdminModal();
@@ -5623,12 +5611,11 @@ async function renderSAAdmins() {
               <th>Admin</th><th>Phone</th><th>Society</th><th>Status</th><th>Created</th><th>Actions</th>
             </tr></thead>
             <tbody>
-              ${
-                admins.length === 0
-                  ? `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-400)">No admins yet</td></tr>`
-                  : admins
-                      .map(
-                        (a) => `
+              ${admins.length === 0
+        ? `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-400)">No admins yet</td></tr>`
+        : admins
+          .map(
+            (a) => `
                 <tr>
                   <td>
                     <div style="display:flex;align-items:center;gap:10px">
@@ -5649,9 +5636,9 @@ async function renderSAAdmins() {
                     </button>
                   </td>
                 </tr>`,
-                      )
-                      .join("")
-              }
+          )
+          .join("")
+      }
             </tbody>
           </table>
         </div>
@@ -5716,7 +5703,7 @@ function getFirstOfMonth() {
 async function renderGuards() {
   GuardMgmt.activeTab = GuardMgmt.activeTab || 'guards';
   if (!GuardMgmt.attDateFrom) GuardMgmt.attDateFrom = getFirstOfMonth();
-  if (!GuardMgmt.attDateTo)   GuardMgmt.attDateTo   = getToday();
+  if (!GuardMgmt.attDateTo) GuardMgmt.attDateTo = getToday();
 
   const pc = el('page-content');
   pc.innerHTML = `
@@ -5735,13 +5722,13 @@ async function renderGuards() {
     <div class="card" style="margin-bottom:0">
       <div style="display:flex;border-bottom:1px solid var(--gray-200);padding:0 20px">
         <button id="tab-guards" onclick="switchGuardTab('guards')"
-          style="padding:14px 20px;background:none;border:none;border-bottom:2px solid ${GuardMgmt.activeTab==='guards'?'var(--primary-500)':'transparent'};
-          color:${GuardMgmt.activeTab==='guards'?'var(--primary-600)':'var(--gray-500)'};font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px">
+          style="padding:14px 20px;background:none;border:none;border-bottom:2px solid ${GuardMgmt.activeTab === 'guards' ? 'var(--primary-500)' : 'transparent'};
+          color:${GuardMgmt.activeTab === 'guards' ? 'var(--primary-600)' : 'var(--gray-500)'};font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px">
           <i class="fa-solid fa-users"></i> Guards
         </button>
         <button id="tab-attendance" onclick="switchGuardTab('attendance')"
-          style="padding:14px 20px;background:none;border:none;border-bottom:2px solid ${GuardMgmt.activeTab==='attendance'?'var(--primary-500)':'transparent'};
-          color:${GuardMgmt.activeTab==='attendance'?'var(--primary-600)':'var(--gray-500)'};font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px">
+          style="padding:14px 20px;background:none;border:none;border-bottom:2px solid ${GuardMgmt.activeTab === 'attendance' ? 'var(--primary-500)' : 'transparent'};
+          color:${GuardMgmt.activeTab === 'attendance' ? 'var(--primary-600)' : 'var(--gray-500)'};font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:8px">
           <i class="fa-solid fa-clock"></i> Attendance
         </button>
       </div>
@@ -5773,16 +5760,16 @@ async function loadGuardsTab() {
 
   try {
     const params = new URLSearchParams({ page: GuardMgmt.page, limit: 20 });
-    if (GuardMgmt.search)       params.set('search', GuardMgmt.search);
+    if (GuardMgmt.search) params.set('search', GuardMgmt.search);
     if (GuardMgmt.statusFilter) params.set('status', GuardMgmt.statusFilter);
 
     // guardApiRequest tries /admin/guards first, falls back to patch file automatically
-    const json   = await guardApiRequest(`/admin/guards?${params}`);
-    const raw    = json.data ?? json;
-    const guards     = Array.isArray(raw) ? raw : (raw.data ?? []);
+    const json = await guardApiRequest(`/admin/guards?${params}`);
+    const raw = json.data ?? json;
+    const guards = Array.isArray(raw) ? raw : (raw.data ?? []);
     const pagination = raw.pagination ?? {};
     GuardMgmt.guards = guards;
-    GuardMgmt.total  = pagination.total ?? guards.length;
+    GuardMgmt.total = pagination.total ?? guards.length;
 
   } catch (err) {
     el('guard-tab-content').innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation" style="font-size:2rem;color:var(--red-400)"></i><p>${err.message}</p></div>`;
@@ -5804,12 +5791,12 @@ async function loadGuardsTab() {
       </div>
       <select onchange="GuardMgmt.statusFilter=this.value;GuardMgmt.page=1;loadGuardsTab()"
         style="padding:8px 12px;border:1px solid var(--gray-300);border-radius:8px;font-size:13px">
-        <option value="" ${!GuardMgmt.statusFilter?'selected':''}>All Status</option>
-        <option value="active"   ${GuardMgmt.statusFilter==='active'  ?'selected':''}>Active</option>
-        <option value="inactive" ${GuardMgmt.statusFilter==='inactive'?'selected':''}>Inactive</option>
-        <option value="blocked"  ${GuardMgmt.statusFilter==='blocked' ?'selected':''}>Blocked</option>
+        <option value="" ${!GuardMgmt.statusFilter ? 'selected' : ''}>All Status</option>
+        <option value="active"   ${GuardMgmt.statusFilter === 'active' ? 'selected' : ''}>Active</option>
+        <option value="inactive" ${GuardMgmt.statusFilter === 'inactive' ? 'selected' : ''}>Inactive</option>
+        <option value="blocked"  ${GuardMgmt.statusFilter === 'blocked' ? 'selected' : ''}>Blocked</option>
       </select>
-      <span style="font-size:13px;color:var(--gray-500);white-space:nowrap">${GuardMgmt.total} guard${GuardMgmt.total!==1?'s':''}</span>
+      <span style="font-size:13px;color:var(--gray-500);white-space:nowrap">${GuardMgmt.total} guard${GuardMgmt.total !== 1 ? 's' : ''}</span>
     </div>
 
     <!-- Table -->
@@ -5855,8 +5842,8 @@ function guardRow(g) {
         <div style="display:flex;align-items:center;gap:10px">
           <div class="user-avatar" style="width:36px;height:36px;font-size:13px;background:var(--green-100);color:var(--green-700);flex-shrink:0">
             ${g.profile_image
-              ? `<img src="${g.profile_image}" style="width:36px;height:36px;border-radius:50%;object-fit:cover">`
-              : initials(g.name)}
+      ? `<img src="${g.profile_image}" style="width:36px;height:36px;border-radius:50%;object-fit:cover">`
+      : initials(g.name)}
           </div>
           <div>
             <div style="font-weight:600;color:var(--gray-800)">${g.name}</div>
@@ -5872,7 +5859,7 @@ function guardRow(g) {
       <td style="padding:12px 14px">${todayLabel}</td>
       <td style="padding:12px 14px">
         <div style="display:flex;gap:8px">
-          <button onclick="openEditGuardModal(${JSON.stringify(g).replace(/"/g,'&quot;')})"
+          <button onclick="openEditGuardModal(${JSON.stringify(g).replace(/"/g, '&quot;')})"
             style="padding:5px 10px;border:1px solid var(--gray-300);border-radius:6px;background:white;font-size:12px;cursor:pointer;color:var(--primary-600)">
             <i class="fa-solid fa-pen"></i> Edit
           </button>
@@ -5919,17 +5906,17 @@ async function guardApiRequest(path) {
 
 function renderGuardPagination() {
   const total = GuardMgmt.total;
-  const page  = GuardMgmt.page;
+  const page = GuardMgmt.page;
   const limit = 20;
   if (total <= limit) return '';
   const start = (page - 1) * limit + 1;
-  const end   = Math.min(page * limit, total);
+  const end = Math.min(page * limit, total);
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;margin-top:8px;font-size:13px;color:var(--gray-500)">
       <span>Showing ${start}–${end} of ${total}</span>
       <div style="display:flex;gap:6px">
-        <button onclick="GuardMgmt.page--;loadGuardsTab()" ${page<=1?'disabled':''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${page<=1?'not-allowed':'pointer'};opacity:${page<=1?0.4:1}">← Prev</button>
-        <button onclick="GuardMgmt.page++;loadGuardsTab()" ${end>=total?'disabled':''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${end>=total?'not-allowed':'pointer'};opacity:${end>=total?0.4:1}">Next →</button>
+        <button onclick="GuardMgmt.page--;loadGuardsTab()" ${page <= 1 ? 'disabled' : ''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${page <= 1 ? 'not-allowed' : 'pointer'};opacity:${page <= 1 ? 0.4 : 1}">← Prev</button>
+        <button onclick="GuardMgmt.page++;loadGuardsTab()" ${end >= total ? 'disabled' : ''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${end >= total ? 'not-allowed' : 'pointer'};opacity:${end >= total ? 0.4 : 1}">Next →</button>
       </div>
     </div>`;
 }
@@ -5954,15 +5941,15 @@ async function loadAttendanceTab() {
     const params = new URLSearchParams({
       page: GuardMgmt.attPage, limit: 30,
       date_from: GuardMgmt.attDateFrom,
-      date_to:   GuardMgmt.attDateTo,
+      date_to: GuardMgmt.attDateTo,
     });
     if (GuardMgmt.attGuardId) params.set('guard_id', GuardMgmt.attGuardId);
-    if (GuardMgmt.attStatus)  params.set('status',   GuardMgmt.attStatus);
+    if (GuardMgmt.attStatus) params.set('status', GuardMgmt.attStatus);
 
     const json = await guardApiRequest(`/admin/guards/attendance?${params}`);
-    const raw  = json.data ?? json;
-    records  = Array.isArray(raw) ? raw : (raw.data ?? []);
-    summary  = raw.summary ?? null;
+    const raw = json.data ?? json;
+    records = Array.isArray(raw) ? raw : (raw.data ?? []);
+    summary = raw.summary ?? null;
     GuardMgmt.attendanceSummary = summary;
     GuardMgmt.attTotal = raw.pagination?.total ?? records.length;
   } catch (err) {
@@ -6004,7 +5991,7 @@ async function loadAttendanceTab() {
           <select onchange="GuardMgmt.attGuardId=this.value;GuardMgmt.attPage=1;loadAttendanceTab()"
             style="width:100%;padding:7px 10px;border:1px solid var(--gray-300);border-radius:7px;font-size:13px">
             <option value="">All Guards</option>
-            ${(GuardMgmt.allGuards||[]).map(g=>`<option value="${g.id}" ${GuardMgmt.attGuardId==g.id?'selected':''}>${g.name}</option>`).join('')}
+            ${(GuardMgmt.allGuards || []).map(g => `<option value="${g.id}" ${GuardMgmt.attGuardId == g.id ? 'selected' : ''}>${g.name}</option>`).join('')}
           </select>
         </div>
         <div>
@@ -6023,11 +6010,11 @@ async function loadAttendanceTab() {
           <label style="font-size:11px;font-weight:600;color:var(--gray-500);display:block;margin-bottom:4px">STATUS</label>
           <select onchange="GuardMgmt.attStatus=this.value;GuardMgmt.attPage=1;loadAttendanceTab()"
             style="width:100%;padding:7px 10px;border:1px solid var(--gray-300);border-radius:7px;font-size:13px">
-            <option value="" ${!GuardMgmt.attStatus?'selected':''}>All Status</option>
-            <option value="present"  ${GuardMgmt.attStatus==='present' ?'selected':''}>Present</option>
-            <option value="absent"   ${GuardMgmt.attStatus==='absent'  ?'selected':''}>Absent</option>
-            <option value="half_day" ${GuardMgmt.attStatus==='half_day'?'selected':''}>Half Day</option>
-            <option value="off"      ${GuardMgmt.attStatus==='off'     ?'selected':''}>Off</option>
+            <option value="" ${!GuardMgmt.attStatus ? 'selected' : ''}>All Status</option>
+            <option value="present"  ${GuardMgmt.attStatus === 'present' ? 'selected' : ''}>Present</option>
+            <option value="absent"   ${GuardMgmt.attStatus === 'absent' ? 'selected' : ''}>Absent</option>
+            <option value="half_day" ${GuardMgmt.attStatus === 'half_day' ? 'selected' : ''}>Half Day</option>
+            <option value="off"      ${GuardMgmt.attStatus === 'off' ? 'selected' : ''}>Off</option>
           </select>
         </div>
       </div>
@@ -6070,10 +6057,10 @@ function attSummaryCard(label, value, color, icon) {
 }
 
 function attRow(r) {
-  const statusMap = { present:'approved', absent:'rejected', half_day:'pending', off:'pending' };
+  const statusMap = { present: 'approved', absent: 'rejected', half_day: 'pending', off: 'pending' };
   const statusClass = statusMap[r.status] || 'pending';
   const dur = calcShiftDuration(r.in_time, r.out_time);
-  const dateStr = new Date(r.date).toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
+  const dateStr = new Date(r.date).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
   return `
     <tr style="border-bottom:1px solid var(--gray-100)" onmouseover="this.style.background='var(--gray-50)'" onmouseout="this.style.background=''">
       <td style="padding:12px 14px">
@@ -6081,7 +6068,7 @@ function attRow(r) {
         <div style="font-size:11px;color:var(--gray-400)">${r.guard_phone || ''}</div>
       </td>
       <td style="padding:12px 14px;font-size:13px;color:var(--gray-700)">${dateStr}</td>
-      <td style="padding:12px 14px"><span class="badge badge-${statusClass}">${r.status.replace('_',' ')}</span></td>
+      <td style="padding:12px 14px"><span class="badge badge-${statusClass}">${r.status.replace('_', ' ')}</span></td>
       <td style="padding:12px 14px;font-size:13px;color:var(--gray-700)">${formatTime(r.in_time) || '—'}</td>
       <td style="padding:12px 14px;font-size:13px;color:var(--gray-700)">${formatTime(r.out_time) || '—'}</td>
       <td style="padding:12px 14px;font-size:13px;color:var(--gray-600)">${dur}</td>
@@ -6099,17 +6086,17 @@ function calcShiftDuration(inTime, outTime) {
 
 function renderAttPagination() {
   const total = GuardMgmt.attTotal;
-  const page  = GuardMgmt.attPage;
+  const page = GuardMgmt.attPage;
   const limit = 30;
   if (total <= limit) return '';
   const start = (page - 1) * limit + 1;
-  const end   = Math.min(page * limit, total);
+  const end = Math.min(page * limit, total);
   return `
     <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;margin-top:8px;font-size:13px;color:var(--gray-500)">
       <span>Showing ${start}–${end} of ${total}</span>
       <div style="display:flex;gap:6px">
-        <button onclick="GuardMgmt.attPage--;loadAttendanceTab()" ${page<=1?'disabled':''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${page<=1?'not-allowed':'pointer'};opacity:${page<=1?0.4:1}">← Prev</button>
-        <button onclick="GuardMgmt.attPage++;loadAttendanceTab()" ${end>=total?'disabled':''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${end>=total?'not-allowed':'pointer'};opacity:${end>=total?0.4:1}">Next →</button>
+        <button onclick="GuardMgmt.attPage--;loadAttendanceTab()" ${page <= 1 ? 'disabled' : ''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${page <= 1 ? 'not-allowed' : 'pointer'};opacity:${page <= 1 ? 0.4 : 1}">← Prev</button>
+        <button onclick="GuardMgmt.attPage++;loadAttendanceTab()" ${end >= total ? 'disabled' : ''} style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:6px;background:white;cursor:${end >= total ? 'not-allowed' : 'pointer'};opacity:${end >= total ? 0.4 : 1}">Next →</button>
       </div>
     </div>`;
 }
@@ -6138,11 +6125,11 @@ function openEditGuardModal(g) {
   const m = el('guard-form-modal');
   if (!m) return;
   el('guard-modal-title').textContent = 'Edit Guard';
-  el('guard-form-id').value    = g.id;
-  el('guard-form-name').value  = g.name || '';
+  el('guard-form-id').value = g.id;
+  el('guard-form-name').value = g.name || '';
   el('guard-form-phone').value = g.phone || '';
   el('guard-form-phone').disabled = true;
-  el('guard-form-email').value  = g.email || '';
+  el('guard-form-email').value = g.email || '';
   el('guard-form-password').value = '';
   el('guard-form-password').required = false;
   el('guard-form-status').value = g.status || 'active';
@@ -6157,13 +6144,13 @@ async function submitGuardForm(e) {
   const errEl = el('guard-form-error');
   errEl.textContent = '';
 
-  const id       = el('guard-form-id').value;
-  const name     = el('guard-form-name').value.trim();
-  const phone    = el('guard-form-phone').value.trim().replace(/\D/g,'');
-  const email    = el('guard-form-email').value.trim();
+  const id = el('guard-form-id').value;
+  const name = el('guard-form-name').value.trim();
+  const phone = el('guard-form-phone').value.trim().replace(/\D/g, '');
+  const email = el('guard-form-email').value.trim();
   const password = el('guard-form-password').value;
-  const status   = el('guard-form-status').value;
-  const isEdit   = !!id;
+  const status = el('guard-form-status').value;
+  const isEdit = !!id;
 
   // Validate
   if (!name) { errEl.textContent = 'Name is required.'; return; }

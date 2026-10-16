@@ -137,26 +137,26 @@ const SuperAdminDashboard: React.FC = () => {
     );
   }
 
-  const StatCard: React.FC<{ title: string; value: number; icon: React.ReactNode; color: string }> = 
+  const StatCard: React.FC<{ title: string; value: number; icon: React.ReactNode; color: string }> =
     ({ title, value, icon, color }) => (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-gray-500 text-sm">{title}</p>
-          <p className="text-3xl font-bold text-gray-800">{value}</p>
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-gray-500 text-sm">{title}</p>
+            <p className="text-3xl font-bold text-gray-800">{value}</p>
+          </div>
+          <div className={`p-3 rounded-full ${color}`}>{icon}</div>
         </div>
-        <div className={`p-3 rounded-full ${color}`}>{icon}</div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="w-full mx-auto px-4 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">MyGate Super Admin</h1>
+            <h1 className="text-2xl font-bold text-gray-800">MyGateBell Super Admin</h1>
             <p className="text-gray-500">Welcome, {user?.name}</p>
           </div>
           <div className="flex items-center gap-3">
@@ -172,35 +172,32 @@ const SuperAdminDashboard: React.FC = () => {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="max-w-7xl mx-auto px-4 mt-6">
+      <div className="w-full mx-auto px-4 mt-6">
         <div className="flex space-x-4 border-b">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'dashboard'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === 'dashboard'
+              ? 'border-b-2 border-blue-500 text-blue-600'
+              : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             Dashboard
           </button>
           <button
             onClick={() => setActiveTab('registrations')}
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'registrations'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === 'registrations'
+              ? 'border-b-2 border-blue-500 text-blue-600'
+              : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             Registrations ({registrations.length})
           </button>
           <button
             onClick={() => setActiveTab('societies')}
-            className={`px-4 py-2 font-medium ${
-              activeTab === 'societies'
-                ? 'border-b-2 border-blue-500 text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
-            }`}
+            className={`px-4 py-2 font-medium ${activeTab === 'societies'
+              ? 'border-b-2 border-blue-500 text-blue-600'
+              : 'text-gray-500 hover:text-gray-700'
+              }`}
           >
             Societies ({societies.length})
           </button>
@@ -208,7 +205,7 @@ const SuperAdminDashboard: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
+      <div className="w-full mx-auto px-4 py-6">
         {activeTab === 'dashboard' && stats && (
           <div>
             {/* Stats Grid */}
@@ -336,12 +333,11 @@ const SuperAdminDashboard: React.FC = () => {
                         <div className="text-sm text-gray-500">{reg.contactEmail}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          reg.status === 'new' ? 'bg-blue-100 text-blue-800' :
+                        <span className={`px-2 py-1 text-xs rounded-full ${reg.status === 'new' ? 'bg-blue-100 text-blue-800' :
                           reg.status === 'under_review' ? 'bg-yellow-100 text-yellow-800' :
-                          reg.status === 'approved' ? 'bg-green-100 text-green-800' :
-                          'bg-red-100 text-red-800'
-                        }`}>
+                            reg.status === 'approved' ? 'bg-green-100 text-green-800' :
+                              'bg-red-100 text-red-800'
+                          }`}>
                           {reg.status}
                         </span>
                       </td>
@@ -413,12 +409,11 @@ const SuperAdminDashboard: React.FC = () => {
                         <span className="capitalize text-sm text-gray-900">{soc.plan}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 text-xs rounded-full ${
-                          soc.status === 'approved' ? 'bg-green-100 text-green-800' :
+                        <span className={`px-2 py-1 text-xs rounded-full ${soc.status === 'approved' ? 'bg-green-100 text-green-800' :
                           soc.status === 'verified' ? 'bg-blue-100 text-blue-800' :
-                          soc.status === 'suspended' ? 'bg-red-100 text-red-800' :
-                          'bg-yellow-100 text-yellow-800'
-                        }`}>
+                            soc.status === 'suspended' ? 'bg-red-100 text-red-800' :
+                              'bg-yellow-100 text-yellow-800'
+                          }`}>
                           {soc.status}
                         </span>
                       </td>

@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import apiClient from "../../../../services/api";
 import { useAuth } from "../../../../contexts/AuthContext";
+import AdminPageShell from "../../../../components/AdminPageShell";
 
 interface DailyHelper {
   id: number;
@@ -215,39 +216,19 @@ export default function DailyHelpersManagementPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-        <div>
-          <button
-            onClick={() => router.push("/admin/dashboard")}
-            className="flex items-center text-sm text-gray-500 hover:text-gray-800 mb-2 transition"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" /> Back to Dashboard
-          </button>
-          <div className="flex items-center gap-3">
-            <div className="p-3 bg-purple-100 rounded-xl text-purple-600">
-              <QrCode className="w-6 h-6" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                Daily Help & Static QR Gate Pass
-              </h1>
-              <p className="text-sm text-gray-500">
-                Static QR pass management, real-time entry/exit tracking, and attendance logs for maids, cooks, cleaners & caretakers.
-              </p>
-            </div>
-          </div>
-        </div>
-
+    <AdminPageShell
+      icon={<QrCode className="w-6 h-6 text-purple-600" />}
+      title="Daily Help & Static QR Gate Pass"
+      subtitle="Static QR pass management, real-time entry/exit tracking, and attendance logs for maids, cooks, cleaners & caretakers."
+      actions={
         <button
           onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-lg hover:bg-purple-700 font-medium transition shadow-sm"
+          className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 font-medium text-sm transition shadow-sm"
         >
           <Plus className="w-4 h-4" /> Add Daily Helper
         </button>
-      </div>
-
+      }
+    >
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
         <div className="bg-white p-5 rounded-xl border border-gray-100 shadow-sm flex items-center justify-between">
@@ -754,6 +735,6 @@ export default function DailyHelpersManagementPage() {
           </div>
         </div>
       )}
-    </div>
+    </AdminPageShell>
   );
 }
