@@ -337,8 +337,34 @@ class ApiClient {
     });
   }
 
+  async updateBuilding(id: string | number, data: any) {
+    return this.request(`/buildings/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteBuilding(id: string | number) {
+    return this.request(`/buildings/${id}`, {
+      method: "DELETE",
+    });
+  }
+
   async getBuildingsBySociety(societyId: string) {
     return this.request(`/buildings/by-society/${societyId}`);
+  }
+
+  async updateFlat(id: string | number, data: any) {
+    return this.request(`/flats/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    });
+  }
+
+  async deleteFlat(id: string | number) {
+    return this.request(`/flats/${id}`, {
+      method: "DELETE",
+    });
   }
 
   async createFlats(data: any) {
