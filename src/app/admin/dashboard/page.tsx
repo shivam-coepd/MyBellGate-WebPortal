@@ -34,6 +34,7 @@ interface SocietyData {
   code: string;
   total_flats: number;
   towers: number;
+  buildings?: any[];
   user_statistics: {
     total_users: number;
     residents: number;
@@ -154,11 +155,11 @@ const SocietyAdminDashboard: React.FC = () => {
       const admins = users.filter((u: any) => u.role === "admin");
 
       const totalFlats = buildings.reduce(
-        (sum: number, b: any) => sum + (b.total_flats || 0),
+        (sum: number, b: any) => sum + (Number(b.total_flats) || 0),
         0,
       );
       const occupiedFlats = buildings.reduce(
-        (sum: number, b: any) => sum + (b.occupied_flats || 0),
+        (sum: number, b: any) => sum + (Number(b.occupied_flats) || 0),
         0,
       );
 
@@ -198,6 +199,7 @@ const SocietyAdminDashboard: React.FC = () => {
         code: user.society_code || "",
         total_flats: totalFlats,
         towers: buildings.length,
+        buildings: buildings,
         user_statistics: {
           total_users: users.length,
           residents: residents.length,
@@ -415,13 +417,26 @@ const SocietyAdminDashboard: React.FC = () => {
                   <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
                     <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Towers</p>
                     <p className="font-bold text-gray-900 text-lg mt-1">
-                      {societyData.towers ?? (societyData as any).buildings?.length ?? 0}
+                      {Math.max(
+                        Array.isArray((societyData as any).buildings)
+                          ? (societyData as any).buildings.length
+                          : 0,
+                        Number(societyData.towers) || 0
+                      )}
                     </p>
                   </div>
                   <div className="bg-gray-50/70 p-4 rounded-xl border border-gray-100">
                     <p className="text-gray-500 text-xs font-medium uppercase tracking-wider">Total Flats</p>
                     <p className="font-bold text-gray-900 text-lg mt-1">
-                      {societyData.total_flats ?? 0}
+                      {Math.max(
+                        Array.isArray((societyData as any).buildings)
+                          ? (societyData as any).buildings.reduce(
+                              (sum: number, b: any) => sum + (Number(b.total_flats) || 0),
+                              0
+                            )
+                          : 0,
+                        Number(societyData.total_flats) || 0
+                      )}
                     </p>
                   </div>
                 </div>

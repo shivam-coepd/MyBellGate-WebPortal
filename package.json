@@ -28,11 +28,11 @@
     "wrangler": "^4.4.0"
   },
   "allowScripts": {
-    "@firebase/util@1.15.1": true,
-    "protobufjs@7.6.4": true,
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true,
-    "workerd@1.20260410.1": true,
-    "esbuild@0.27.3": true
+    "@firebase/util@1.15.3": true,
+    "esbuild@0.28.2": true,
+    "protobufjs@7.6.6": true,
+    "workerd@1.20261012.1": true
   }
 }
